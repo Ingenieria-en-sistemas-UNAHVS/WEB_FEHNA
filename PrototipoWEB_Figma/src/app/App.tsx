@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useState, useEffect } from "react";
 import { Menu, X, ChevronRight, Calendar, Users, Trophy, Play, Mail, Phone, MapPin, ArrowRight, Star, Clock, Globe, ChevronDown } from "lucide-react";
 
@@ -10,163 +11,91 @@ const NAV_LINKS = [
   { label: "Contacto", href: "#contacto" },
 ];
 
-const NEWS = [
-  {
-    id: 1,
-    category: "Campeonato",
-    title: "Honduras domina en los Juegos Centroamericanos de Natación 2025",
-    excerpt: "La delegación hondureña obtuvo 12 medallas de oro en la edición más competida de los Juegos Centroamericanos celebrada en Ciudad de Guatemala.",
-    date: "10 Jul 2025",
-    image: "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=800&h=500&fit=crop&auto=format",
-    featured: true,
-  },
-  {
-    id: 2,
-    category: "Resultados",
-    title: "Karla Mendoza rompe récord nacional en 100m mariposa",
-    excerpt: "Con un tiempo de 57.43 segundos, la nadadora capitalina establece una nueva marca histórica para el país.",
-    date: "5 Jul 2025",
-    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=500&fit=crop&auto=format",
-    featured: false,
-  },
-  {
-    id: 3,
-    category: "Selección",
-    title: "Convocatoria oficial para el Campeonato Panamericano de Lima",
-    excerpt: "La Fenah anuncia los 24 atletas seleccionados para representar a Honduras en el torneo continental de agosto.",
-    date: "1 Jul 2025",
-    image: "https://images.unsplash.com/photo-1544551763-92ab472cad5d?w=800&h=500&fit=crop&auto=format",
-    featured: false,
-  },
-  {
-    id: 4,
-    category: "Waterpolo",
-    title: "Equipo masculino de waterpolo clasifica al Regional UANA",
-    excerpt: "Con cuatro victorias consecutivas, Los Tiburones de Honduras consiguen su pase al torneo regional de la UANA.",
-    date: "28 Jun 2025",
-    image: "https://images.unsplash.com/photo-1618019852954-af0a02f40fd0?w=800&h=500&fit=crop&auto=format",
-    featured: false,
-  },
-];
-
-const EVENTS = [
-  { date: "20 Jul", month: "JUL", title: "Campeonato Nacional Juvenil", location: "Tegucigalpa", discipline: "Natación", type: "Nacional", level: "Juvenil" },
-  { date: "2 Ago", month: "AGO", title: "Copa Honduras Open", location: "San Pedro Sula", discipline: "Natación", type: "Nacional", level: "Absoluta" },
-  { date: "14 Ago", month: "AGO", title: "Panamericano Corta Distancia", location: "Lima, Perú", discipline: "Natación", type: "Internacional", level: "Absoluta" },
-  { date: "21 Ago", month: "AGO", title: "Torneo Regional de Clavados", location: "Ciudad de Guatemala", discipline: "Clavados", type: "Internacional", level: "Juvenil" },
-  { date: "5 Sep", month: "SEP", title: "Liga Nacional de Waterpolo", location: "Comayagüela", discipline: "Waterpolo", type: "Nacional", level: "Absoluta" },
-  { date: "18 Sep", month: "SEP", title: "Campeonato Centroamericano Sincronizado", location: "San José, Costa Rica", discipline: "Sincronizado", type: "Internacional", level: "Absoluta" },
-  { date: "3 Oct", month: "OCT", title: "Clasificatorio Olímpico UANA", location: "Montevideo, Uruguay", discipline: "Natación", type: "Internacional", level: "Absoluta" },
-  { date: "15 Oct", month: "OCT", title: "Campeonato Nacional Infantil", location: "La Ceiba", discipline: "Natación", type: "Nacional", level: "Infantil" },
-];
-
-const ATHLETES = [
-  {
-    name: "Karla Mendoza",
-    discipline: "Natación",
-    specialty: "Mariposa / Libre",
-    records: 4,
-    medals: 18,
-    image: "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=400&h=500&fit=crop&auto=format",
-    highlight: "Récord Nacional 100m Mariposa",
-    country: "Honduras",
-  },
-  {
-    name: "Diego Flores",
-    discipline: "Clavados",
-    specialty: "Trampolín 3m / 10m",
-    records: 2,
-    medals: 11,
-    image: "https://images.unsplash.com/photo-1507034589631-9433cc6bc453?w=400&h=500&fit=crop&auto=format",
-    highlight: "Campeón Centroamericano 2024",
-    country: "Honduras",
-  },
-  {
-    name: "Sofía Rivera",
-    discipline: "Sincronizado",
-    specialty: "Solo / Dueto",
-    records: 1,
-    medals: 9,
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=500&fit=crop&auto=format",
-    highlight: "Subcampeona Panamericana",
-    country: "Honduras",
-  },
-  {
-    name: "Marco Lara",
-    discipline: "Natación",
-    specialty: "Espalda / Combinado",
-    records: 3,
-    medals: 15,
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=500&fit=crop&auto=format",
-    highlight: "Clasificatorio Olímpico Paris 2024",
-    country: "Honduras",
-  },
-];
-
-const GALLERY = [
-  { id: 1, src: "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=600&h=400&fit=crop&auto=format", alt: "Competencia de natación", span: "col-span-2 row-span-2" },
-  { id: 2, src: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop&auto=format", alt: "Nadador en acción", span: "" },
-  { id: 3, src: "https://images.unsplash.com/photo-1544551763-92ab472cad5d?w=400&h=300&fit=crop&auto=format", alt: "Clavadista en competencia", span: "" },
-  { id: 4, src: "https://images.unsplash.com/photo-1544551763-77ef2d0cfc6c?w=400&h=300&fit=crop&auto=format", alt: "Entrenamiento acuático", span: "" },
-  { id: 5, src: "https://images.unsplash.com/photo-1560090995-5e9c2a9c4fc8?w=400&h=300&fit=crop&auto=format", alt: "Waterpolo partido", span: "" },
-  { id: 6, src: "https://images.unsplash.com/photo-1519315901367-f34ff9154487?w=600&h=300&fit=crop&auto=format", alt: "Nado sincronizado", span: "col-span-2" },
-];
-
-const SPONSORS = [
-  { name: "Banco Atlántida", tier: "Platino" },
-  { name: "Cerveza Salva Vida", tier: "Platino" },
-  { name: "Tigo Honduras", tier: "Oro" },
-  { name: "BANPAIS", tier: "Oro" },
-  { name: "Secretaría de Deportes", tier: "Oro" },
-  { name: "COH", tier: "Plata" },
-  { name: "Agua Crystal", tier: "Plata" },
-  { name: "Speedo Honduras", tier: "Plata" },
-];
-
 const DISCIPLINES = ["Todos", "Natación", "Clavados", "Waterpolo", "Sincronizado"];
-
 const PRUEBAS = ["Todas", "50m Libre", "100m Libre", "200m Libre", "100m Mariposa", "200m Mariposa", "100m Espalda", "200m Espalda", "100m Pecho", "200m Individual"];
 const CATEGORIAS_TABLA = ["Todas", "Infantil", "Juvenil", "Junior", "Absoluta"];
 
-const TIEMPOS: {
-  pos: number; nombre: string; club: string; departamento: string;
-  categoria: string; prueba: string; tiempo: string; fecha: string; lugar: string; record: boolean;
-}[] = [
-  { pos: 1, nombre: "Karla Mendoza",      club: "Club Depor Tegucigalpa", departamento: "Francisco Morazán", categoria: "Absoluta",  prueba: "100m Mariposa",    tiempo: "57.43", fecha: "05 Jul 2025", lugar: "Tegucigalpa",         record: true  },
-  { pos: 2, nombre: "Lucía Aguilar",      club: "Natación SPS",           departamento: "Cortés",            categoria: "Absoluta",  prueba: "100m Mariposa",    tiempo: "58.91", fecha: "05 Jul 2025", lugar: "Tegucigalpa",         record: false },
-  { pos: 3, nombre: "Daniela Reyes",      club: "Club Aqua Choluteca",    departamento: "Choluteca",         categoria: "Absoluta",  prueba: "100m Mariposa",    tiempo: "59.07", fecha: "05 Jul 2025", lugar: "Tegucigalpa",         record: false },
-  { pos: 1, nombre: "Marco Lara",         club: "Tigres Acuáticos",       departamento: "Cortés",            categoria: "Absoluta",  prueba: "100m Espalda",     tiempo: "54.12", fecha: "28 Jun 2025", lugar: "San Pedro Sula",      record: false },
-  { pos: 2, nombre: "Óscar Fuentes",      club: "Club Depor Tegucigalpa", departamento: "Francisco Morazán", categoria: "Absoluta",  prueba: "100m Espalda",     tiempo: "54.88", fecha: "28 Jun 2025", lugar: "San Pedro Sula",      record: false },
-  { pos: 3, nombre: "Bryan Castellanos",  club: "Natación Comayagua",     departamento: "Comayagua",         categoria: "Absoluta",  prueba: "100m Espalda",     tiempo: "55.34", fecha: "28 Jun 2025", lugar: "San Pedro Sula",      record: false },
-  { pos: 1, nombre: "Sofía Rivera",       club: "Club Acuático La Ceiba", departamento: "Atlántida",         categoria: "Junior",    prueba: "200m Individual",  tiempo: "2:14.56", fecha: "20 Jun 2025", lugar: "La Ceiba",           record: true  },
-  { pos: 2, nombre: "Valeria Cruz",       club: "Tiburones del Norte",    departamento: "Cortés",            categoria: "Junior",    prueba: "200m Individual",  tiempo: "2:16.10", fecha: "20 Jun 2025", lugar: "La Ceiba",           record: false },
-  { pos: 3, nombre: "Andrea Pineda",      club: "Club Aqua Choluteca",    departamento: "Choluteca",         categoria: "Junior",    prueba: "200m Individual",  tiempo: "2:18.45", fecha: "20 Jun 2025", lugar: "La Ceiba",           record: false },
-  { pos: 1, nombre: "Diego Flores",       club: "Tigres Acuáticos",       departamento: "Cortés",            categoria: "Absoluta",  prueba: "200m Mariposa",    tiempo: "1:58.23", fecha: "15 Jun 2025", lugar: "San Pedro Sula",     record: false },
-  { pos: 1, nombre: "Camila Martínez",    club: "Club Acuático La Ceiba", departamento: "Atlántida",         categoria: "Juvenil",   prueba: "100m Libre",       tiempo: "58.34", fecha: "10 Jun 2025", lugar: "La Ceiba",            record: false },
-  { pos: 2, nombre: "Paola Herrera",      club: "Natación SPS",           departamento: "Cortés",            categoria: "Juvenil",   prueba: "100m Libre",       tiempo: "59.01", fecha: "10 Jun 2025", lugar: "La Ceiba",            record: false },
-  { pos: 3, nombre: "Fernanda López",     club: "Club Depor Tegucigalpa", departamento: "Francisco Morazán", categoria: "Juvenil",   prueba: "100m Libre",       tiempo: "59.67", fecha: "10 Jun 2025", lugar: "La Ceiba",            record: false },
-  { pos: 1, nombre: "Mateo Soriano",      club: "Tiburones del Norte",    departamento: "Cortés",            categoria: "Juvenil",   prueba: "50m Libre",        tiempo: "24.89", fecha: "10 Jun 2025", lugar: "La Ceiba",            record: false },
-  { pos: 2, nombre: "Andrés Núñez",       club: "Natación Comayagua",     departamento: "Comayagua",         categoria: "Juvenil",   prueba: "50m Libre",        tiempo: "25.12", fecha: "10 Jun 2025", lugar: "La Ceiba",            record: false },
-  { pos: 1, nombre: "Isabella Mendoza",   club: "Club Aqua Choluteca",    departamento: "Choluteca",         categoria: "Infantil",  prueba: "50m Libre",        tiempo: "29.44", fecha: "1 Jun 2025",  lugar: "Choluteca",           record: true  },
-  { pos: 2, nombre: "Sara Castillo",      club: "Club Depor Tegucigalpa", departamento: "Francisco Morazán", categoria: "Infantil",  prueba: "50m Libre",        tiempo: "29.98", fecha: "1 Jun 2025",  lugar: "Choluteca",           record: false },
-  { pos: 3, nombre: "Renata Paz",         club: "Natación SPS",           departamento: "Cortés",            categoria: "Infantil",  prueba: "50m Libre",        tiempo: "30.21", fecha: "1 Jun 2025",  lugar: "Choluteca",           record: false },
-  { pos: 1, nombre: "Emilio Vargas",      club: "Tigres Acuáticos",       departamento: "Cortés",            categoria: "Infantil",  prueba: "100m Pecho",       tiempo: "1:14.33", fecha: "1 Jun 2025", lugar: "Choluteca",           record: false },
-  { pos: 1, nombre: "Roberto Mejía",      club: "Club Acuático La Ceiba", departamento: "Atlántida",         categoria: "Junior",    prueba: "200m Libre",       tiempo: "1:52.67", fecha: "25 May 2025", lugar: "Tegucigalpa",        record: false },
-];
+interface NewsData {
+  id: number;
+  category: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  imageUrl: string;
+  featured: boolean;
+}
+
+interface EventData {
+  id: number;
+  dateDisplay: string;
+  month: string;
+  title: string;
+  location: string;
+  discipline: string;
+  type: string;
+  level: string;
+}
+
+interface AthleteData {
+  id: number;
+  name: string;
+  discipline: string;
+  specialty: string;
+  records: number;
+  medals: number;
+  imageUrl: string;
+  highlight: string;
+  country: string;
+}
+
+interface TimeRecordData {
+  id: number;
+  position: number;
+  athleteName: string;
+  club: string;
+  departamento: string;
+  categoria: string;
+  prueba: string;
+  tiempo: string;
+  fecha: string;
+  lugar: string;
+  record: boolean;
+}
+
+interface GalleryData {
+  id: number;
+  imageUrl: string;
+  alt: string;
+  span: string;
+}
+
+interface SponsorData {
+  id: number;
+  name: string;
+  tier: string;
+}
 
 function RankingsSection() {
   const [prueba, setPrueba] = useState("Todas");
   const [categoria, setCategoria] = useState("Todas");
   const [search, setSearch] = useState("");
-  const [sortCol, setSortCol] = useState<"pos" | "tiempo" | "nombre" | "club">("tiempo");
+  const [sortCol, setSortCol] = useState<"position" | "tiempo" | "athleteName" | "club">("tiempo");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
+  const [tiempos, setTiempos] = useState<TimeRecordData[]>([]);
 
-  const filtered = TIEMPOS
+  useEffect(() => {
+    fetch("/api/rankings")
+      .then((r) => r.json())
+      .then(setTiempos)
+      .catch(console.error);
+  }, []);
+
+  const filtered = tiempos
     .filter((r) => (prueba === "Todas" || r.prueba === prueba))
     .filter((r) => (categoria === "Todas" || r.categoria === categoria))
     .filter((r) =>
       search === "" ||
-      r.nombre.toLowerCase().includes(search.toLowerCase()) ||
+      r.athleteName.toLowerCase().includes(search.toLowerCase()) ||
       r.club.toLowerCase().includes(search.toLowerCase()) ||
       r.departamento.toLowerCase().includes(search.toLowerCase())
     )
@@ -216,9 +145,7 @@ function RankingsSection() {
           </p>
         </div>
 
-        {/* Filters */}
         <div className="flex flex-col gap-4 mb-6">
-          {/* Search */}
           <div className="relative max-w-sm">
             <input
               type="text"
@@ -234,7 +161,6 @@ function RankingsSection() {
             )}
           </div>
 
-          {/* Category tabs */}
           <div className="flex gap-2 flex-wrap">
             {CATEGORIAS_TABLA.map((c) => (
               <button
@@ -252,7 +178,6 @@ function RankingsSection() {
             ))}
           </div>
 
-          {/* Prueba scroll */}
           <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-1">
             {PRUEBAS.map((p) => (
               <button
@@ -270,12 +195,10 @@ function RankingsSection() {
           </div>
         </div>
 
-        {/* Count */}
         <div className="text-xs text-muted-foreground mb-3">
           {filtered.length} resultado{filtered.length !== 1 ? "s" : ""}
         </div>
 
-        {/* Table */}
         <div className="rounded-xl border border-white/10 overflow-hidden">
           <div className="overflow-x-auto scrollbar-hide">
             <table className="w-full min-w-[700px] text-sm">
@@ -284,9 +207,9 @@ function RankingsSection() {
                   <th className="text-left px-4 py-3 text-xs text-muted-foreground uppercase tracking-wider w-12">#</th>
                   <th
                     className="text-left px-4 py-3 text-xs text-muted-foreground uppercase tracking-wider cursor-pointer hover:text-white transition-colors select-none"
-                    onClick={() => toggleSort("nombre")}
+                    onClick={() => toggleSort("athleteName")}
                   >
-                    Nadador <SortIcon col="nombre" />
+                    Nadador <SortIcon col="athleteName" />
                   </th>
                   <th
                     className="text-left px-4 py-3 text-xs text-muted-foreground uppercase tracking-wider cursor-pointer hover:text-white transition-colors select-none"
@@ -317,17 +240,17 @@ function RankingsSection() {
                 ) : (
                   filtered.map((r, i) => (
                     <tr
-                      key={i}
+                      key={r.id}
                       className="border-b border-white/5 hover:bg-card transition-colors duration-150 group"
                     >
                       <td className="px-4 py-3">
-                        <span className={`font-black text-base ${medalColor(r.pos)}`} style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
-                          {r.pos === 1 ? "🥇" : r.pos === 2 ? "🥈" : r.pos === 3 ? "🥉" : r.pos}
+                        <span className={`font-black text-base ${medalColor(r.position)}`} style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
+                          {r.position === 1 ? "🥇" : r.position === 2 ? "🥈" : r.position === 3 ? "🥉" : r.position}
                         </span>
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
-                          <span className="text-white font-semibold group-hover:text-accent transition-colors">{r.nombre}</span>
+                          <span className="text-white font-semibold group-hover:text-accent transition-colors">{r.athleteName}</span>
                           {r.record && (
                             <span className="text-xs bg-accent/20 text-accent border border-accent/30 px-1.5 py-0.5 rounded font-bold tracking-wider">
                               RN
@@ -367,7 +290,6 @@ function RankingsSection() {
           </div>
         </div>
 
-        {/* Legend */}
         <div className="flex items-center gap-4 mt-4 text-xs text-muted-foreground">
           <div className="flex items-center gap-1.5">
             <span className="bg-accent/20 text-accent border border-accent/30 px-1.5 py-0.5 rounded font-bold">RN</span>
@@ -394,19 +316,63 @@ export default function App() {
   const [formSent, setFormSent] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
+  const [news, setNews] = useState<NewsData[]>([]);
+  const [events, setEvents] = useState<EventData[]>([]);
+  const [athletes, setAthletes] = useState<AthleteData[]>([]);
+  const [gallery, setGallery] = useState<GalleryData[]>([]);
+  const [sponsors, setSponsors] = useState<SponsorData[]>([]);
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const filteredEvents = calendarFilter === "Todos"
-    ? EVENTS
-    : EVENTS.filter((e) => e.discipline === calendarFilter);
+  useEffect(() => {
+    fetch("/api/news").then((r) => r.json()).then(setNews).catch(console.error);
+    fetch("/api/events").then((r) => r.json()).then(setEvents).catch(console.error);
+    fetch("/api/athletes").then((r) => r.json()).then(setAthletes).catch(console.error);
+    fetch("/api/gallery").then((r) => r.json()).then(setGallery).catch(console.error);
+    fetch("/api/sponsors").then((r) => r.json()).then(setSponsors).catch(console.error);
+  }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const filteredEvents = calendarFilter === "Todos"
+    ? events
+    : events.filter((e) => e.discipline === calendarFilter);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFormSent(true);
+    try {
+      await fetch("/api/registration", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      setFormSent(true);
+    } catch (err) {
+      console.error("Error submitting registration:", err);
+    }
+  };
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const data = new FormData(form);
+    try {
+      await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nombre: data.get("nombre"),
+          email: data.get("email"),
+          asunto: data.get("asunto"),
+          mensaje: data.get("mensaje"),
+        }),
+      });
+      form.reset();
+    } catch (err) {
+      console.error("Error submitting contact:", err);
+    }
   };
 
   const scrollTo = (id: string) => {
@@ -423,7 +389,6 @@ export default function App() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
-          {/* Logo */}
           <button onClick={() => scrollTo("inicio")} className="flex items-center gap-3 group">
             <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center shrink-0">
               <svg viewBox="0 0 40 40" className="w-7 h-7" fill="none">
@@ -439,7 +404,6 @@ export default function App() {
             </div>
           </button>
 
-          {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-1">
             {NAV_LINKS.map((l) => (
               <button
@@ -452,7 +416,6 @@ export default function App() {
             ))}
           </nav>
 
-          {/* CTAs */}
           <div className="hidden lg:flex items-center gap-3">
             <button
               onClick={() => scrollTo("calendario")}
@@ -469,7 +432,6 @@ export default function App() {
             </button>
           </div>
 
-          {/* Mobile menu */}
           <button
             className="lg:hidden text-white p-1"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -478,7 +440,6 @@ export default function App() {
           </button>
         </div>
 
-        {/* Mobile menu panel */}
         {menuOpen && (
           <div className="lg:hidden bg-[#0a2040] border-t border-white/10 px-4 py-4">
             {NAV_LINKS.map((l) => (
@@ -503,7 +464,6 @@ export default function App() {
 
       {/* ── HERO ── */}
       <section id="inicio" className="relative min-h-screen flex items-center overflow-hidden">
-        {/* Background */}
         <div className="absolute inset-0 bg-[#061529]">
           <img
             src="https://images.unsplash.com/photo-1530549387789-4c1017266635?w=1600&h=900&fit=crop&auto=format"
@@ -514,7 +474,6 @@ export default function App() {
           <div className="absolute inset-0 bg-gradient-to-r from-[#061529] via-transparent to-transparent" />
         </div>
 
-        {/* Animated water lines */}
         <div className="absolute bottom-0 left-0 right-0 h-32 overflow-hidden opacity-30">
           {[...Array(4)].map((_, i) => (
             <div
@@ -587,7 +546,6 @@ export default function App() {
               </button>
             </div>
 
-            {/* Stats strip */}
             <div className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-6">
               {[
                 { n: "380+", label: "Atletas Activos" },
@@ -609,7 +567,6 @@ export default function App() {
           </div>
         </div>
 
-        {/* Discipline tabs floating */}
         <div className="absolute bottom-0 left-0 right-0 overflow-x-auto scrollbar-hide">
           <div className="flex min-w-max border-t border-white/10">
             {["Natación", "Clavados", "Waterpolo", "Nado Sincronizado"].map((d, i) => (
@@ -646,52 +603,54 @@ export default function App() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Featured */}
-            <div className="lg:col-span-2 group cursor-pointer">
-              <div className="relative overflow-hidden rounded-lg bg-card h-72 lg:h-96">
-                <img
-                  src={NEWS[0].image}
-                  alt={NEWS[0].title}
-                  className="w-full h-full object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#061529] via-[#061529]/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <span className="inline-block bg-accent text-[#061529] text-xs font-bold px-2 py-0.5 rounded mb-3 tracking-wider uppercase">
-                    {NEWS[0].category}
-                  </span>
-                  <h3
-                    className="text-2xl font-black text-white leading-tight"
-                    style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
-                  >
-                    {NEWS[0].title}
-                  </h3>
-                  <p className="text-white/60 text-sm mt-2 line-clamp-2">{NEWS[0].excerpt}</p>
-                  <div className="flex items-center gap-2 mt-3 text-xs text-white/40">
-                    <Clock size={12} />
-                    {NEWS[0].date}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Side news */}
-            <div className="flex flex-col gap-4">
-              {NEWS.slice(1).map((n) => (
-                <div key={n.id} className="group flex gap-4 p-4 rounded-lg bg-card border border-white/5 hover:border-accent/30 transition-all duration-200 cursor-pointer">
-                  <div className="w-20 h-20 shrink-0 rounded overflow-hidden bg-secondary">
-                    <img src={n.image} alt={n.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <span className="text-accent text-xs font-bold tracking-wider uppercase">{n.category}</span>
-                    <h4 className="text-white text-sm font-semibold mt-1 leading-snug line-clamp-2">{n.title}</h4>
-                    <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
-                      <Clock size={10} />
-                      {n.date}
+            {news.length > 0 && (
+              <>
+                <div className="lg:col-span-2 group cursor-pointer">
+                  <div className="relative overflow-hidden rounded-lg bg-card h-72 lg:h-96">
+                    <img
+                      src={news[0].imageUrl}
+                      alt={news[0].title}
+                      className="w-full h-full object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#061529] via-[#061529]/20 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-6">
+                      <span className="inline-block bg-accent text-[#061529] text-xs font-bold px-2 py-0.5 rounded mb-3 tracking-wider uppercase">
+                        {news[0].category}
+                      </span>
+                      <h3
+                        className="text-2xl font-black text-white leading-tight"
+                        style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
+                      >
+                        {news[0].title}
+                      </h3>
+                      <p className="text-white/60 text-sm mt-2 line-clamp-2">{news[0].excerpt}</p>
+                      <div className="flex items-center gap-2 mt-3 text-xs text-white/40">
+                        <Clock size={12} />
+                        {news[0].date}
+                      </div>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
+
+                <div className="flex flex-col gap-4">
+                  {news.slice(1).map((n) => (
+                    <div key={n.id} className="group flex gap-4 p-4 rounded-lg bg-card border border-white/5 hover:border-accent/30 transition-all duration-200 cursor-pointer">
+                      <div className="w-20 h-20 shrink-0 rounded overflow-hidden bg-secondary">
+                        <img src={n.imageUrl} alt={n.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <span className="text-accent text-xs font-bold tracking-wider uppercase">{n.category}</span>
+                        <h4 className="text-white text-sm font-semibold mt-1 leading-snug line-clamp-2">{n.title}</h4>
+                        <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
+                          <Clock size={10} />
+                          {n.date}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -718,7 +677,6 @@ export default function App() {
             </button>
           </div>
 
-          {/* Filter tabs */}
           <div className="flex gap-2 flex-wrap mb-8">
             {DISCIPLINES.map((d) => (
               <button
@@ -737,19 +695,18 @@ export default function App() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {filteredEvents.map((ev, i) => (
+            {filteredEvents.map((ev) => (
               <div
-                key={i}
+                key={ev.id}
                 className="flex items-start gap-4 p-4 rounded-lg bg-card border border-white/5 hover:border-accent/30 transition-all duration-200 group cursor-pointer"
               >
-                {/* Date block */}
                 <div className="shrink-0 w-14 h-14 bg-accent/10 border border-accent/20 rounded-lg flex flex-col items-center justify-center">
                   <span className="text-accent text-xs font-bold tracking-widest uppercase">{ev.month}</span>
                   <span
                     className="text-white font-black text-xl leading-none"
                     style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
                   >
-                    {ev.date.split(" ")[0]}
+                    {ev.dateDisplay.split(" ")[0]}
                   </span>
                 </div>
 
@@ -795,9 +752,9 @@ export default function App() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {ATHLETES.map((a, i) => (
+            {athletes.map((a, i) => (
               <div
-                key={a.name}
+                key={a.id}
                 className={`group relative rounded-xl overflow-hidden bg-card border cursor-pointer transition-all duration-300 ${
                   activeAthletes === i ? "border-accent shadow-lg shadow-accent/10" : "border-white/5 hover:border-accent/40"
                 }`}
@@ -805,7 +762,7 @@ export default function App() {
               >
                 <div className="relative h-56 overflow-hidden bg-secondary">
                   <img
-                    src={a.image}
+                    src={a.imageUrl}
                     alt={a.name}
                     className="w-full h-full object-cover object-top opacity-75 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
                   />
@@ -1051,13 +1008,13 @@ export default function App() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 auto-rows-48">
-            {GALLERY.map((item) => (
+            {gallery.map((item) => (
               <div
                 key={item.id}
                 className={`group relative overflow-hidden rounded-lg bg-secondary cursor-pointer ${item.span}`}
               >
                 <img
-                  src={item.src}
+                  src={item.imageUrl}
                   alt={item.alt}
                   className="w-full h-full object-cover opacity-75 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
                 />
@@ -1086,13 +1043,12 @@ export default function App() {
             </h3>
           </div>
 
-          {/* Platino */}
           <div className="mb-8">
             <div className="text-center text-xs text-accent/60 tracking-widest uppercase mb-4">Patrocinador Platino</div>
             <div className="flex justify-center gap-6 flex-wrap">
-              {SPONSORS.filter((s) => s.tier === "Platino").map((s) => (
+              {sponsors.filter((s) => s.tier === "Platino").map((s) => (
                 <div
-                  key={s.name}
+                  key={s.id}
                   className="px-8 py-5 bg-card border border-accent/20 rounded-lg text-white font-bold text-lg hover:border-accent transition-all duration-200 cursor-pointer min-w-[180px] text-center"
                   style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
                 >
@@ -1102,13 +1058,12 @@ export default function App() {
             </div>
           </div>
 
-          {/* Oro */}
           <div className="mb-8">
             <div className="text-center text-xs text-yellow-400/60 tracking-widest uppercase mb-4">Patrocinador Oro</div>
             <div className="flex justify-center gap-4 flex-wrap">
-              {SPONSORS.filter((s) => s.tier === "Oro").map((s) => (
+              {sponsors.filter((s) => s.tier === "Oro").map((s) => (
                 <div
-                  key={s.name}
+                  key={s.id}
                   className="px-6 py-4 bg-card border border-yellow-400/10 rounded-lg text-white/80 font-semibold text-base hover:border-yellow-400/30 transition-all duration-200 cursor-pointer"
                   style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
                 >
@@ -1118,13 +1073,12 @@ export default function App() {
             </div>
           </div>
 
-          {/* Plata */}
           <div>
             <div className="text-center text-xs text-white/30 tracking-widest uppercase mb-4">Patrocinador Plata</div>
             <div className="flex justify-center gap-3 flex-wrap">
-              {SPONSORS.filter((s) => s.tier === "Plata").map((s) => (
+              {sponsors.filter((s) => s.tier === "Plata").map((s) => (
                 <div
-                  key={s.name}
+                  key={s.id}
                   className="px-5 py-3 bg-card border border-white/5 rounded-lg text-white/50 font-medium text-sm hover:border-white/20 transition-all duration-200 cursor-pointer"
                 >
                   {s.name}
@@ -1170,7 +1124,6 @@ export default function App() {
                 ))}
               </div>
 
-              {/* Social */}
               <div className="mt-10">
                 <div className="text-xs text-muted-foreground uppercase tracking-wider mb-4">Redes Sociales</div>
                 <div className="flex gap-3">
@@ -1186,7 +1139,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* Contact form */}
             <div className="bg-card rounded-xl border border-white/10 p-8">
               <h3
                 className="text-2xl font-black text-white uppercase mb-6"
@@ -1194,11 +1146,13 @@ export default function App() {
               >
                 Enviar Mensaje
               </h3>
-              <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+              <form className="space-y-4" onSubmit={handleContactSubmit}>
                 <div>
                   <label className="text-xs text-muted-foreground uppercase tracking-wider block mb-1.5">Nombre</label>
                   <input
+                    name="nombre"
                     type="text"
+                    required
                     className="w-full bg-secondary border border-white/10 rounded px-4 py-3 text-white text-sm focus:border-accent focus:outline-none transition-colors placeholder-white/20"
                     placeholder="Tu nombre"
                   />
@@ -1206,7 +1160,9 @@ export default function App() {
                 <div>
                   <label className="text-xs text-muted-foreground uppercase tracking-wider block mb-1.5">Correo</label>
                   <input
+                    name="email"
                     type="email"
+                    required
                     className="w-full bg-secondary border border-white/10 rounded px-4 py-3 text-white text-sm focus:border-accent focus:outline-none transition-colors placeholder-white/20"
                     placeholder="correo@ejemplo.com"
                   />
@@ -1214,7 +1170,7 @@ export default function App() {
                 <div>
                   <label className="text-xs text-muted-foreground uppercase tracking-wider block mb-1.5">Asunto</label>
                   <div className="relative">
-                    <select className="w-full bg-secondary border border-white/10 rounded px-4 py-3 text-white text-sm focus:border-accent focus:outline-none transition-colors appearance-none cursor-pointer">
+                    <select name="asunto" required className="w-full bg-secondary border border-white/10 rounded px-4 py-3 text-white text-sm focus:border-accent focus:outline-none transition-colors appearance-none cursor-pointer">
                       <option>Afiliación de nadador</option>
                       <option>Registro de club</option>
                       <option>Información sobre competencias</option>
@@ -1228,7 +1184,9 @@ export default function App() {
                 <div>
                   <label className="text-xs text-muted-foreground uppercase tracking-wider block mb-1.5">Mensaje</label>
                   <textarea
+                    name="mensaje"
                     rows={4}
+                    required
                     className="w-full bg-secondary border border-white/10 rounded px-4 py-3 text-white text-sm focus:border-accent focus:outline-none transition-colors resize-none placeholder-white/20"
                     placeholder="¿En qué podemos ayudarte?"
                   />
@@ -1250,7 +1208,6 @@ export default function App() {
       <footer className="bg-[#030d1a] border-t border-white/5 pt-16 pb-8">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
-            {/* Brand */}
             <div className="lg:col-span-2">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center shrink-0">
