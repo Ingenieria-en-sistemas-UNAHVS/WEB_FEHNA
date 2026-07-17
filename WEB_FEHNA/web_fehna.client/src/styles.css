@@ -1,0 +1,474 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --color-primary: #1FD6F5;
+  --color-primary-content: #04141F;
+  --color-secondary: #E23B7A;
+  --color-secondary-content: #FFFFFF;
+  --color-accent: #F2994A;
+  --color-accent-content: #1A1200;
+  --color-neutral: #071322;
+  --color-neutral-content: #C9D8E8;
+  --color-base-100: #0A1A2E;
+  --color-base-200: #0F2038;
+  --color-base-300: #15304F;
+  --color-base-content: #E7EEF6;
+  --color-info: #3ABEEA;
+  --color-success: #21C577;
+  --color-warning: #F2A93B;
+  --color-error: #F0506E;
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --max-width: 80rem;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--color-base-100);
+  color: var(--color-base-content);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+p {
+  margin: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.font-display {
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.01em;
+}
+
+.container {
+  max-width: var(--max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media screen and (min-width: 640px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Shared admin CRUD page patterns (dashboard, atletas/eventos/noticias admin) */
+
+.admin-page {
+  padding: 1.5rem;
+}
+
+@media screen and (min-width: 640px) {
+  .admin-page {
+    padding: 2.5rem;
+  }
+}
+
+.admin-page__header {
+  margin-bottom: 2rem;
+}
+
+.admin-page__title {
+  font-size: 1.875rem;
+  text-transform: uppercase;
+}
+
+.admin-dialog {
+  border-radius: 1rem !important;
+}
+
+/* Shared table pattern (admin CRUD tables + public records tables) */
+
+.table-wrap {
+  overflow-x: auto;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-subtle);
+}
+
+.table-head-row {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: rgba(231, 238, 246, 0.5);
+  background: var(--color-base-200);
+}
+
+.table-tag {
+  font-size: 0.625rem;
+}
+
+.table-muted {
+  color: rgba(231, 238, 246, 0.6);
+}
+
+.table-faint {
+  color: rgba(231, 238, 246, 0.4);
+}
+
+.table-nowrap {
+  white-space: nowrap;
+}
+
+.table-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.table-empty {
+  text-align: center;
+  color: rgba(231, 238, 246, 0.5);
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+/* Shared form field patterns (admin dialogs + public contact/affiliation forms) */
+
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.form-row-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.field__label {
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Shared public page patterns (records/eventos/noticias/atletas/contacto/home) */
+
+.page {
+  max-width: var(--max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding: 4rem 1rem;
+}
+
+@media screen and (min-width: 640px) {
+  .page {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .page {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-primary);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.page-title {
+  font-size: 2.25rem;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+@media screen and (min-width: 640px) {
+  .page-title {
+    font-size: 3rem;
+  }
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.empty-note {
+  color: rgba(231, 238, 246, 0.5);
+  grid-column: 1 / -1;
+  text-align: center;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+/* Shared event-card pattern (eventos page + home calendar teaser) */
+
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media screen and (min-width: 640px) {
+  .event-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.event-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--color-base-200);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+.event-card__date {
+  width: 3.5rem;
+  height: 3.5rem;
+  flex-shrink: 0;
+  border-radius: 0.5rem;
+  background: rgba(31, 214, 245, 0.1);
+  border: 1px solid rgba(31, 214, 245, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.event-card__day {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 1.125rem;
+  line-height: 1;
+  color: var(--color-primary);
+}
+
+.event-card__month {
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  color: rgba(31, 214, 245, 0.7);
+}
+
+.event-card__body {
+  min-width: 0;
+}
+
+.event-card__tags {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.event-card__name {
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.event-card__location {
+  font-size: 0.75rem;
+  color: rgba(231, 238, 246, 0.5);
+}
+
+/* Shared athlete-card pattern (atletas page + home elite athletes teaser) */
+
+.athlete-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+@media screen and (min-width: 640px) {
+  .athlete-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .athlete-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.athlete-card {
+  border-radius: 1rem;
+  overflow: hidden;
+  background: var(--color-base-200);
+  border: 1px solid var(--border-subtle);
+}
+
+.athlete-card__photo {
+  position: relative;
+  height: 14rem;
+}
+
+.athlete-card__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.athlete-card__tag {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+}
+
+.athlete-card__body {
+  padding: 1rem;
+}
+
+.athlete-card__name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.athlete-card__specialty {
+  font-size: 0.75rem;
+  color: rgba(231, 238, 246, 0.5);
+  margin-bottom: 0.75rem;
+}
+
+.athlete-card__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  text-align: center;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 0.75rem;
+}
+
+.athlete-card__stat-value {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.athlete-card__stat-label {
+  font-size: 0.625rem;
+  color: rgba(231, 238, 246, 0.5);
+  text-transform: uppercase;
+}
+
+/* Shared form-card pattern (contacto page + home affiliation/contact forms) */
+
+.form-card {
+  background: var(--color-base-200);
+  border: 1px solid var(--border-subtle);
+  border-radius: 1rem;
+  padding: 1.5rem;
+}
+
+@media screen and (min-width: 640px) {
+  .form-card {
+    padding: 2rem;
+  }
+}
+
+.form-card__title {
+  font-size: 1.25rem;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-size: 0.875rem;
+}
+
+.contact-list__item {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.contact-list__icon {
+  color: var(--color-primary);
+}
+
+.form-message {
+  margin-bottom: 1rem;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-base-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-base-300);
+  border-radius: 8px;
+}

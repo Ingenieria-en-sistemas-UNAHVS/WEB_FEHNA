@@ -1,0 +1,51 @@
+<section class="page">
+  <p class="eyebrow">2026 &ndash; 2027</p>
+  <h1 class="page-title">Calendario de competencias</h1>
+
+  <div class="filter-row eventos-filters">
+    @for (s of scopes; track s) {
+      <button (click)="activeScope.set(s)"
+              [outlined]="activeScope() !== s"
+              pButton
+              rounded
+              severity="primary"
+              size="small">
+        {{ s }}
+      </button>
+    }
+  </div>
+  <div class="filter-row eventos-filters eventos-filters--last">
+    @for (d of disciplines; track d) {
+      <button (click)="activeDiscipline.set(d)"
+              [text]="activeDiscipline() !== d"
+              pButton
+              rounded
+              severity="secondary"
+              size="small">
+        {{ d }}
+      </button>
+    }
+  </div>
+
+  <div class="event-grid">
+    @for (ev of events(); track ev.id) {
+      <div class="event-card">
+        <div class="event-card__date">
+          <span class="event-card__day">{{ ev.day }}</span>
+          <span class="event-card__month">{{ ev.month }}</span>
+        </div>
+        <div class="event-card__body">
+          <div class="event-card__tags">
+            <p-tag [severity]="ev.scope === 'INTERNACIONAL' ? 'warn' : 'contrast'" [value]="ev.scope"
+                   styleClass="table-tag"/>
+            <p-tag severity="secondary" [value]="ev.discipline" styleClass="table-tag"/>
+          </div>
+          <p class="event-card__name truncate">{{ ev.name }}</p>
+          <p class="event-card__location">{{ ev.location }}</p>
+        </div>
+      </div>
+    } @empty {
+      <p class="empty-note">No hay eventos con estos filtros.</p>
+    }
+  </div>
+</section>

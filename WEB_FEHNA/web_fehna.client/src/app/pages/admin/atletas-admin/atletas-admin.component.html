@@ -1,0 +1,94 @@
+<section class="admin-page">
+  <div class="admin-page__header flex align-items-center justify-content-between">
+    <h1 class="admin-page__title">Atletas</h1>
+    <button (click)="openCreate()" pButton rounded severity="primary" size="small">+ Nuevo atleta</button>
+  </div>
+
+  <div class="table-wrap">
+    <p-table [value]="athletes()" [rowHover]="true" styleClass="text-sm">
+      <ng-template pTemplate="header">
+        <tr class="table-head-row">
+          <th>Nombre</th>
+          <th>Disciplina</th>
+          <th>Especialidad</th>
+          <th>Medallas</th>
+          <th class="text-right">Acciones</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item>
+        <tr>
+          <td class="font-medium">{{ item.name }}</td>
+          <td><p-tag severity="secondary" [value]="item.discipline" styleClass="table-tag"/></td>
+          <td class="table-muted">{{ item.specialty }}</td>
+          <td>{{ item.medals }}</td>
+          <td class="text-right table-actions">
+            <button (click)="openEdit(item)" pButton rounded outlined size="small">Editar</button>
+            <button (click)="remove(item.id)" pButton rounded outlined severity="danger" size="small">Eliminar</button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td class="table-empty" colspan="5">No hay atletas todavía.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <p-dialog
+    [visible]="showForm()"
+    (visibleChange)="showForm.set($event)"
+    [modal]="true"
+    [dismissableMask]="false"
+    [header]="editingId() !== null ? 'Editar atleta' : 'Nuevo atleta'"
+    [style]="{width: '32rem'}"
+    styleClass="admin-dialog mx-4"
+  >
+    <form (ngSubmit)="save()" id="athlete-form">
+      <div class="form-grid">
+        <div class="field flex flex-column">
+          <span class="field__label">Nombre</span>
+          <input [(ngModel)]="form.name" fluid name="name" pInputText required/>
+        </div>
+        <div class="form-row-2">
+          <div class="field flex flex-column">
+            <span class="field__label">Disciplina</span>
+            <p-select [(ngModel)]="form.discipline" [options]="disciplineOptions" fluid name="discipline"/>
+          </div>
+          <div class="field flex flex-column">
+            <span class="field__label">Especialidad</span>
+            <input [(ngModel)]="form.specialty" fluid name="specialty" pInputText placeholder="Mariposa / Libre"/>
+          </div>
+        </div>
+        <div class="field flex flex-column">
+          <span class="field__label">URL de foto</span>
+          <input [(ngModel)]="form.photoUrl" fluid name="photoUrl" pInputText placeholder="https://..."/>
+        </div>
+        <div class="field flex flex-column">
+          <span class="field__label">Logro destacado</span>
+          <input [(ngModel)]="form.highlight" fluid name="highlight" pInputText
+                 placeholder="Récord Nacional 100m mariposa"/>
+        </div>
+        <div class="form-row-3">
+          <div class="field flex flex-column">
+            <span class="field__label">Medallas</span>
+            <input [(ngModel)]="form.medals" fluid min="0" name="medals" pInputText type="number"/>
+          </div>
+          <div class="field flex flex-column">
+            <span class="field__label">Récords</span>
+            <input [(ngModel)]="form.records" fluid min="0" name="records" pInputText type="number"/>
+          </div>
+          <div class="field flex flex-column">
+            <span class="field__label">Competencias</span>
+            <input [(ngModel)]="form.competitions" fluid min="0" name="competitions" pInputText type="number"/>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <ng-template pTemplate="footer">
+      <button (click)="cancel()" pButton rounded severity="secondary" text type="button">Cancelar</button>
+      <button form="athlete-form" pButton rounded severity="primary" type="submit">Guardar</button>
+    </ng-template>
+  </p-dialog>
+</section>

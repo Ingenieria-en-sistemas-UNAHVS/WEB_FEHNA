@@ -1,0 +1,5 @@
+.public-shell {
+  min-height: 100vh;
+  background: var(--color-base-100);
+  color: var(--color-base-content);
+}

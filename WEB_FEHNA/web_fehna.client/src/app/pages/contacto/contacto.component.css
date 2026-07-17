@@ -1,0 +1,32 @@
+.contacto-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 3rem;
+}
+
+@media screen and (min-width: 1024px) {
+  .contacto-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.contacto-title {
+  margin-bottom: 1rem;
+}
+
+.contacto-lead {
+  color: rgba(231, 238, 246, 0.6);
+  margin-bottom: 2rem;
+  max-width: 28rem;
+}
+
+.contacto-map {
+  margin-top: 2.5rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  height: 14rem;
+  background: var(--color-base-200);
+  color: rgba(231, 238, 246, 0.4);
+  font-size: 0.875rem;
+}

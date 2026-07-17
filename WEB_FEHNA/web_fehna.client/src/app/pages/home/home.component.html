@@ -1,0 +1,382 @@
+<!-- HERO -->
+<section class="hero">
+  <div class="hero__bg">
+    <img
+      alt="Nadador de mariposa"
+      src="https://images.unsplash.com/photo-1530549387789-4c1017266635?q=80&w=2000&auto=format&fit=crop"
+    />
+    <div class="hero__gradient"></div>
+  </div>
+
+  <div class="hero__content page">
+    <span class="hero__badge">
+      Federación oficial · miembro FINA · UANA
+    </span>
+
+    <h1 class="hero__title">
+      Federación<br/>
+      <span class="text-primary">Hondureña</span><br/>
+      de Natación
+    </h1>
+
+    <p class="hero__lead">
+      El organismo rector de la natación, clavados, waterpolo y nado sincronizado en Honduras.
+      Formamos campeones, construimos comunidad.
+    </p>
+
+    <div class="hero__actions">
+      <a pButton rounded severity="primary" class="px-6" routerLink="/contacto">Afíliate</a>
+      <a pButton rounded outlined severity="primary" class="px-6" routerLink="/atletas">Conoce a nuestros atletas</a>
+    </div>
+
+    <div class="hero__stats">
+      @for (stat of stats; track stat.label) {
+        <div>
+          <p class="hero__stat-value">{{ stat.value }}</p>
+          <p class="hero__stat-label">{{ stat.label }}</p>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="hero__disciplines">
+    <div class="hero__disciplines-inner page">
+      @for (d of disciplines; track d) {
+        <p-tag [severity]="badgeSeverity(d)" [value]="d"/>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- NOTICIAS -->
+<section class="page">
+  <div class="section-head flex align-items-end justify-content-between">
+    <div>
+      <p class="eyebrow">Lo más reciente</p>
+      <h2 class="section-title">Noticias &amp; resultados</h2>
+    </div>
+    <a class="section-link hidden sm:block" routerLink="/noticias">Ver todas &rarr;</a>
+  </div>
+
+  <div class="home-news-grid">
+    @if (featuredNews(); as featured) {
+      <a [routerLink]="['/noticias']" class="home-news-featured">
+        <div class="home-news-featured__image">
+          <img [alt]="featured.title" [src]="featured.imageUrl"/>
+        </div>
+        <div class="home-news-featured__body">
+          <p-tag [severity]="badgeSeverity(featured.category)" [value]="featured.category" styleClass="news-card__tag"/>
+          <h3 class="home-news-featured__title">
+            {{ featured.title }}
+          </h3>
+          <p class="home-news-featured__summary line-clamp-2">{{ featured.summary }}</p>
+          <p class="home-news-featured__date">{{ featured.date | date: 'd MMM y' }}</p>
+        </div>
+      </a>
+    }
+
+    <div class="home-news-side">
+      @for (item of sideNews(); track item.id) {
+        <a [routerLink]="['/noticias']" class="home-news-side__item">
+          <p-tag [severity]="badgeSeverity(item.category)" [value]="item.category" styleClass="home-news-side__tag"/>
+          <div>
+            <p class="home-news-side__title">{{ item.title }}</p>
+            <p class="home-news-side__date">{{ item.date | date: 'd MMM y' }}</p>
+          </div>
+        </a>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- CALENDARIO -->
+<section class="section--alt">
+  <div class="page">
+    <div class="section-head section-head--wrap flex flex-column sm:flex-row sm:align-items-end justify-content-between">
+      <div>
+        <p class="eyebrow">2026 &ndash; 2027</p>
+        <h2 class="section-title">Calendario de competencias</h2>
+      </div>
+      <a pButton rounded severity="primary" size="small" class="px-5 w-fit" routerLink="/eventos">Ver
+        calendario completo</a>
+    </div>
+
+    <div class="event-grid">
+      @for (ev of upcomingEvents(); track ev.id) {
+        <div class="event-card event-card--light">
+          <div class="event-card__date">
+            <span class="event-card__day">{{ ev.day }}</span>
+            <span class="event-card__month">{{ ev.month }}</span>
+          </div>
+          <div class="event-card__body">
+            <div class="event-card__tags">
+              <p-tag [severity]="ev.scope === 'INTERNACIONAL' ? 'warn' : 'contrast'" [value]="ev.scope"
+                     styleClass="table-tag"/>
+              <p-tag severity="secondary" [value]="ev.discipline" styleClass="table-tag"/>
+            </div>
+            <p class="event-card__name truncate">{{ ev.name }}</p>
+            <p class="event-card__location">{{ ev.location }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ATLETAS DE ELITE -->
+<section class="page text-center">
+  <p class="eyebrow">Orgullo nacional</p>
+  <h2 class="section-title">Atletas de élite</h2>
+  <p class="home-athletes__lead">
+    Representan a Honduras en los más altos escenarios del deporte acuático mundial.
+  </p>
+
+  <div class="athlete-grid text-left">
+    @for (athlete of athletes(); track athlete.id) {
+      <div class="athlete-card">
+        <div class="athlete-card__photo">
+          <img [alt]="athlete.name" [src]="athlete.photoUrl"/>
+          <p-tag [severity]="badgeSeverity(athlete.discipline)" [value]="athlete.discipline"
+                 styleClass="athlete-card__tag"/>
+        </div>
+        <div class="athlete-card__body">
+          <p class="athlete-card__name">{{ athlete.name }}</p>
+          <p class="athlete-card__specialty">{{ athlete.specialty }}</p>
+          <div class="athlete-card__stats">
+            <div>
+              <p class="athlete-card__stat-value">{{ athlete.medals }}</p>
+              <p class="athlete-card__stat-label">Medallas</p>
+            </div>
+            <div>
+              <p class="athlete-card__stat-value">{{ athlete.records }}</p>
+              <p class="athlete-card__stat-label">Récords</p>
+            </div>
+            <div>
+              <p class="athlete-card__stat-value">{{ athlete.competitions }}</p>
+              <p class="athlete-card__stat-label">Competencias</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <a pButton rounded outlined severity="primary" class="home-athletes__cta" routerLink="/atletas">Ver todos los atletas &rarr;</a>
+</section>
+
+<!-- REGISTRO DE TIEMPOS -->
+<section class="section--alt">
+  <div class="page">
+    <p class="eyebrow">Rendimiento oficial</p>
+    <h2 class="section-title home-records__title">Registro de tiempos</h2>
+
+    <div class="filter-row home-records__filters">
+      @for (cat of recordCategories; track cat) {
+        <button
+          (click)="recordCategory.set(cat)"
+          [outlined]="recordCategory() !== cat"
+          pButton
+          rounded
+          severity="primary"
+          size="small"
+        >
+          {{ cat }}
+        </button>
+      }
+    </div>
+
+    <div class="filter-row home-records__filters home-records__filters--last">
+      @for (ev of recordEvents; track ev) {
+        <button
+          (click)="recordEvent.set(ev)"
+          [text]="recordEvent() !== ev"
+          pButton
+          rounded
+          severity="secondary"
+          size="small"
+        >
+          {{ ev }}
+        </button>
+      }
+    </div>
+
+    <div class="table-wrap">
+      <p-table [value]="records()" [rowHover]="true" styleClass="text-sm">
+        <ng-template pTemplate="header">
+          <tr class="table-head-row">
+            <th>#</th>
+            <th>Nadador</th>
+            <th>Club</th>
+            <th>Departamento</th>
+            <th>Categoría</th>
+            <th>Prueba</th>
+            <th>Tiempo</th>
+            <th>Fecha</th>
+            <th>Competencia</th>
+          </tr>
+        </ng-template>
+        <ng-template let-i="rowIndex" let-r pTemplate="body">
+          <tr>
+            <td class="table-faint">{{ i + 1 }}</td>
+            <td class="font-medium">
+              {{ r.swimmer }}
+              @if (r.isRecord) {
+                <p-tag severity="secondary" styleClass="table-tag records-rn-tag" value="RN"/>
+              }
+            </td>
+            <td class="table-muted">{{ r.club }}</td>
+            <td class="table-muted">{{ r.department }}</td>
+            <td><p-tag severity="contrast" [value]="r.category" styleClass="table-tag"/></td>
+            <td class="table-muted">{{ r.event }}</td>
+            <td class="records-time">{{ r.time }}</td>
+            <td class="table-faint table-nowrap">{{ r.date }}</td>
+            <td class="table-faint">{{ r.competition }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <p class="home-records__note">Datos oficiales de competencias registradas ante FEHNA.</p>
+  </div>
+</section>
+
+<!-- REGISTRO / AFILIACION -->
+<section class="page affiliation-grid">
+  <div>
+    <p class="eyebrow">Únete a la familia acuática</p>
+    <h2 class="section-title affiliation__title">
+      Regístrate<br/><span class="text-primary">como nadador</span>
+    </h2>
+    <p class="affiliation__lead">
+      Afíliate a la FEHNA y accede a competencias oficiales, programas de desarrollo e intercambios calificados y
+      representación nacional.
+    </p>
+    <ul class="check-list">
+      <li class="check-list__item"><span class="check-list__icon">&#10003;</span> Acceso a competencias nacionales e
+        internacionales
+      </li>
+      <li class="check-list__item"><span class="check-list__icon">&#10003;</span> Red de 47 clubes oficiales en todo Honduras</li>
+      <li class="check-list__item"><span class="check-list__icon">&#10003;</span> Programas de becas para atletas de alto
+        rendimiento
+      </li>
+      <li class="check-list__item"><span class="check-list__icon">&#10003;</span> Representación ante FINA, UANA y COH</li>
+    </ul>
+  </div>
+
+  <form (ngSubmit)="submitAffiliation()" class="form-card">
+    <h3 class="form-card__title">Formulario de afiliación</h3>
+    <div class="form-grid">
+      <div class="field flex flex-column">
+        <span class="field__label">Nombre completo *</span>
+        <input [(ngModel)]="affiliationForm.name" fluid name="name" pInputText
+               placeholder="Tu nombre"
+               required/>
+      </div>
+      <div class="field flex flex-column">
+        <span class="field__label">Correo electrónico *</span>
+        <input [(ngModel)]="affiliationForm.email" fluid name="email" pInputText
+               placeholder="correo@ejemplo.com"
+               required type="email"/>
+      </div>
+      <div class="form-row-2">
+        <div class="field flex flex-column">
+          <span class="field__label">Club o asociación</span>
+          <input [(ngModel)]="affiliationForm.club" fluid name="club" pInputText
+                 placeholder="Club"/>
+        </div>
+        <div class="field flex flex-column">
+          <span class="field__label">Disciplina</span>
+          <p-select [(ngModel)]="affiliationForm.discipline" [options]="disciplines" fluid name="discipline"/>
+        </div>
+      </div>
+      <div class="field flex flex-column">
+        <span class="field__label">Categoría</span>
+        <p-select [(ngModel)]="affiliationForm.category" [options]="affiliationCategories" fluid name="category"/>
+      </div>
+      <div class="field flex flex-column">
+        <span class="field__label">Mensaje adicional</span>
+        <textarea [(ngModel)]="affiliationForm.message" fluid name="message" pTextarea
+                  rows="3"></textarea>
+      </div>
+      <button pButton rounded severity="primary" class="mt-2" type="submit">Enviar solicitud</button>
+    </div>
+  </form>
+</section>
+
+<!-- GALERIA -->
+<section class="page">
+  <div class="section-head flex align-items-end justify-content-between">
+    <div>
+      <p class="eyebrow">Momentos destacados</p>
+      <h2 class="section-title">Galería multimedia</h2>
+    </div>
+    <a class="section-link hidden sm:block" routerLink="/nosotros">Ver galería
+      completa &rarr;</a>
+  </div>
+
+  <div class="gallery-grid">
+    <img [src]="gallery[0]" alt="Galería FEHNA" class="gallery-grid__hero"/>
+    @for (img of gallery.slice(1); track img) {
+      <img [src]="img" alt="Galería FEHNA"/>
+    }
+  </div>
+</section>
+
+<!-- PATROCINADORES -->
+<section class="section--alt">
+  <div class="page text-center">
+    <p class="eyebrow">Aliados estratégicos</p>
+    <h2 class="section-title home-sponsors__title">Nuestros patrocinadores</h2>
+    <div class="sponsor-row home-sponsors__row">
+      @for (s of sponsors; track s) {
+        <p-tag severity="contrast" [value]="s" styleClass="sponsor-tag"/>
+      }
+    </div>
+    <p class="home-sponsors__label">Patrocinador oro</p>
+    <div class="sponsor-row">
+      @for (s of goldSponsors; track s) {
+        <p-tag severity="contrast" [value]="s" styleClass="sponsor-tag sponsor-tag--gold"/>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="page affiliation-grid">
+  <div>
+    <p class="eyebrow">Estamos para ayudarte</p>
+    <h2 class="section-title affiliation__title">Contáctanos</h2>
+    <p class="affiliation__lead home-contact__lead">
+      Para dudas sobre afiliación, competencias o alianzas institucionales, comunícate con nosotros.
+    </p>
+    <ul class="contact-list">
+      <li class="contact-list__item"><span class="contact-list__icon">&#128205;</span> Complejo Deportivo Nacional, Col. Miraflores,
+        Tegucigalpa, Honduras
+      </li>
+      <li class="contact-list__item"><span class="contact-list__icon">&#128222;</span> +504 2235-9184 / +504 2235-9185</li>
+      <li class="contact-list__item"><span class="contact-list__icon">&#9993;</span> contacto&#64;fehna.hn</li>
+    </ul>
+  </div>
+
+  <form class="form-card">
+    <h3 class="form-card__title">Enviar mensaje</h3>
+    <div class="form-grid">
+      <div class="field flex flex-column">
+        <span class="field__label">Nombre</span>
+        <input fluid pInputText placeholder="Tu nombre"/>
+      </div>
+      <div class="field flex flex-column">
+        <span class="field__label">Correo</span>
+        <input fluid pInputText placeholder="correo@ejemplo.com" type="email"/>
+      </div>
+      <div class="field flex flex-column">
+        <span class="field__label">Asunto</span>
+        <p-select [options]="contactSubjects" fluid placeholder="Afiliación de nadador"/>
+      </div>
+      <div class="field flex flex-column">
+        <span class="field__label">Mensaje</span>
+        <textarea fluid pTextarea rows="4"></textarea>
+      </div>
+      <button pButton rounded severity="primary" class="mt-2" type="button">Enviar mensaje</button>
+    </div>
+  </form>
+</section>

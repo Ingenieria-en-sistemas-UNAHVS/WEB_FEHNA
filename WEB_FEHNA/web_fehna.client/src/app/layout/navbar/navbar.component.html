@@ -1,0 +1,66 @@
+<header class="app-header sticky">
+  <div class="app-header__bar container flex align-items-center justify-content-between">
+    <a class="brand flex align-items-center" routerLink="/">
+      <div class="brand__mark flex align-items-center justify-content-center">
+        <span class="brand__mark-text">FHN</span>
+      </div>
+      <div class="brand__label hidden sm:block">
+        <p class="brand__name">FEHNA</p>
+        <p class="brand__tagline">Fed. Hondureña de Natación</p>
+      </div>
+    </a>
+
+    <nav class="nav-links hidden lg:flex align-items-center">
+      @for (link of links; track link.path) {
+        <a
+          [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+          [routerLink]="link.path"
+          class="nav-link"
+          routerLinkActive="nav-link--active"
+        >
+          {{ link.label }}
+        </a>
+      }
+    </nav>
+
+    <div class="nav-cta hidden lg:flex align-items-center">
+      <a pButton rounded outlined severity="primary" size="small" class="nav-cta__btn" routerLink="/eventos">Ver Calendario</a>
+      <a pButton rounded severity="primary" size="small" class="nav-cta__btn" routerLink="/contacto">Afíliate</a>
+    </div>
+
+    <button
+      (click)="toggleMobile()"
+      aria-label="Abrir menú"
+      pButton
+      rounded
+      text
+      severity="secondary"
+      size="small"
+      class="mobile-toggle lg:hidden"
+    >
+      <svg class="mobile-toggle__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </svg>
+    </button>
+  </div>
+
+  @if (mobileOpen()) {
+    <nav class="mobile-nav lg:hidden flex flex-column">
+      @for (link of links; track link.path) {
+        <a
+          (click)="closeMobile()"
+          [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+          [routerLink]="link.path"
+          class="mobile-nav__link"
+          routerLinkActive="mobile-nav__link--active"
+        >
+          {{ link.label }}
+        </a>
+      }
+      <a pButton rounded severity="primary" size="small" class="mobile-nav__cta" (click)="closeMobile()"
+         routerLink="/contacto">
+        Afíliate
+      </a>
+    </nav>
+  }
+</header>

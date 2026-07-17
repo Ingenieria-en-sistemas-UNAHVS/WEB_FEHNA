@@ -1,0 +1,60 @@
+<footer class="app-footer">
+  <div class="app-footer__grid container">
+    <div>
+      <div class="footer-brand flex align-items-center">
+        <div class="footer-brand__mark flex align-items-center justify-content-center">
+          <span class="footer-brand__mark-text">FHN</span>
+        </div>
+        <p class="footer-brand__name">FEHNA</p>
+      </div>
+      <p class="footer-text">
+        Organismo rector de la natación, clavados, waterpolo y nado sincronizado en Honduras. Miembro oficial de FINA y
+        UANA.
+      </p>
+      <div class="footer-social flex">
+        @for (icon of ['facebook', 'instagram', 'youtube', 'tiktok']; track icon) {
+          <span class="footer-social__item flex align-items-center justify-content-center">
+            {{ icon.charAt(0) }}
+          </span>
+        }
+      </div>
+    </div>
+
+    <div>
+      <p class="footer-heading">Disciplinas</p>
+      <ul class="footer-list">
+        <li>Natación</li>
+        <li>Clavados</li>
+        <li>Waterpolo</li>
+        <li>Nado Sincronizado</li>
+      </ul>
+    </div>
+
+    <div>
+      <p class="footer-heading">Institución</p>
+      <ul class="footer-list">
+        <li><a class="footer-link" routerLink="/nosotros">Sobre la Federación</a></li>
+        <li><a class="footer-link" routerLink="/eventos">Calendario</a></li>
+        <li><a class="footer-link" routerLink="/records">Registro de tiempos</a></li>
+        <li><a class="footer-link" routerLink="/contacto">Contacto</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <p class="footer-heading">Contacto</p>
+      <ul class="footer-list">
+        <li>Complejo Deportivo Nacional, Teguc.</li>
+        <li>+504 2235-9184</li>
+        <li>contacto&#64;fehna.hn</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="app-footer__bottom container flex flex-column sm:flex-row justify-content-between align-items-center">
+    <p>&copy; {{ year }} Federación Hondureña de Natación. Todos los derechos reservados.</p>
+    <div class="app-footer__legal flex">
+      <span>Política de privacidad</span>
+      <span>Términos de uso</span>
+    </div>
+  </div>
+</footer>

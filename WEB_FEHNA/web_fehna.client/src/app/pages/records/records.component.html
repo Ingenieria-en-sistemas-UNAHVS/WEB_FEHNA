@@ -1,0 +1,66 @@
+<section class="page">
+  <p class="eyebrow">Rendimiento oficial</p>
+  <h1 class="page-title">Registro de tiempos</h1>
+
+  <input
+    (input)="onSearch($any($event.target).value)"
+    class="records-search"
+    pInputText
+    placeholder="Buscar nadador, club, departamento..."
+    type="text"
+  />
+
+  <div class="filter-row records-filters">
+    @for (cat of categories; track cat) {
+      <button (click)="category.set(cat)"
+              [outlined]="category() !== cat"
+              pButton
+              rounded
+              severity="primary"
+              size="small">
+        {{ cat }}
+      </button>
+    }
+  </div>
+
+  <div class="table-wrap">
+    <p-table [value]="records()" [rowHover]="true" styleClass="text-sm">
+      <ng-template pTemplate="header">
+        <tr class="table-head-row">
+          <th>#</th>
+          <th>Nadador</th>
+          <th>Club</th>
+          <th>Departamento</th>
+          <th>Categoría</th>
+          <th>Prueba</th>
+          <th>Tiempo</th>
+          <th>Fecha</th>
+          <th>Competencia</th>
+        </tr>
+      </ng-template>
+      <ng-template let-i="rowIndex" let-r pTemplate="body">
+        <tr>
+          <td class="table-faint">{{ i + 1 }}</td>
+          <td class="font-medium">
+            {{ r.swimmer }}
+            @if (r.isRecord) {
+              <p-tag severity="secondary" styleClass="table-tag records-rn-tag" value="RN"/>
+            }
+          </td>
+          <td class="table-muted">{{ r.club }}</td>
+          <td class="table-muted">{{ r.department }}</td>
+          <td><p-tag severity="contrast" [value]="r.category" styleClass="table-tag"/></td>
+          <td class="table-muted">{{ r.event }}</td>
+          <td class="records-time">{{ r.time }}</td>
+          <td class="table-faint table-nowrap">{{ r.date }}</td>
+          <td class="table-faint">{{ r.competition }}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td class="table-empty" colspan="9">Sin resultados para tu búsqueda.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</section>

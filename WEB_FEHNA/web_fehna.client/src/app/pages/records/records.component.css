@@ -1,0 +1,20 @@
+.records-search {
+  width: 100%;
+  max-width: 28rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.records-filters {
+  margin-bottom: 1.5rem;
+}
+
+.records-rn-tag {
+  margin-left: 0.25rem;
+}
+
+.records-time {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 600;
+  color: var(--color-primary);
+}

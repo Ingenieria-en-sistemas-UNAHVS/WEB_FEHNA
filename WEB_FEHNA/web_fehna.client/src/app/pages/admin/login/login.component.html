@@ -1,0 +1,29 @@
+<div class="login-page flex align-items-center justify-content-center">
+  <form (ngSubmit)="submit()" class="login-card">
+    <div class="login-card__brand flex align-items-center">
+      <div class="login-card__mark flex align-items-center justify-content-center">
+        <span class="login-card__mark-text">FHN</span>
+      </div>
+      <p class="login-card__title">Panel Administrativo FEHNA</p>
+    </div>
+
+    @if (error()) {
+      <p-message severity="error" [text]="error()" styleClass="text-sm form-message w-full"/>
+    }
+
+    <div class="field flex flex-column">
+      <span class="field__label">Correo electrónico</span>
+      <input [(ngModel)]="email" pInputText fluid name="email" placeholder="admin@fehna.hn"
+             required
+             type="email"/>
+    </div>
+    <div class="field field--last flex flex-column">
+      <span class="field__label">Contraseña</span>
+      <input [(ngModel)]="password" pInputText fluid name="password"
+             placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" required
+             type="password"/>
+    </div>
+    <button pButton rounded severity="primary" fluid type="submit">Iniciar sesión</button>
+    <p class="login-card__hint text-center">Demo: admin&#64;fehna.hn / fehna2026</p>
+  </form>
+</div>

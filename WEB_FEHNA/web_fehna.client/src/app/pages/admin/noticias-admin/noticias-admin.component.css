@@ -1,0 +1,8 @@
+.news-admin__title {
+  max-width: 20rem;
+}
+
+.news-admin__checkbox {
+  gap: 0.75rem;
+  cursor: pointer;
+}

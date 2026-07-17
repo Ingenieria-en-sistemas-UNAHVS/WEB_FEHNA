@@ -1,0 +1,29 @@
+<section class="page sobre-page">
+  <p class="eyebrow">Sobre nosotros</p>
+  <h1 class="page-title">La Federación Hondureña de Natación</h1>
+  <p class="sobre-lead">
+    Somos el organismo rector de la natación, los clavados, el waterpolo y el nado sincronizado en Honduras.
+    Trabajamos para desarrollar el talento acuático del país, promover la actividad física y representar a
+    Honduras ante organismos internacionales como FINA, UANA y el COH.
+  </p>
+
+  <h2 class="sobre-section-title">Historia</h2>
+  <div class="sobre-timeline">
+    @for (m of milestones; track m.year) {
+      <div class="sobre-timeline__item">
+        <span class="sobre-timeline__year">{{ m.year }}</span>
+        <p class="sobre-timeline__text">{{ m.text }}</p>
+      </div>
+    }
+  </div>
+
+  <h2 class="sobre-section-title">Junta Directiva</h2>
+  <div class="sobre-board">
+    @for (b of board; track b.name) {
+      <div class="sobre-board__card">
+        <p class="font-medium">{{ b.name }}</p>
+        <p class="sobre-board__role">{{ b.role }}</p>
+      </div>
+    }
+  </div>
+</section>

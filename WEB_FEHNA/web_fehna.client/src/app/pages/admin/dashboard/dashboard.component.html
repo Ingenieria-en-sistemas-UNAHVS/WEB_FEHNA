@@ -1,0 +1,21 @@
+<section class="admin-page">
+  <h1 class="admin-page__title">Panel administrativo</h1>
+  <p class="admin-page__subtitle">
+    Gestiona el contenido público del sitio: noticias, atletas y calendario de eventos.
+  </p>
+
+  <div class="dashboard-cards">
+    @for (c of cards(); track c.label) {
+      <a [routerLink]="c.link" class="dashboard-card">
+        <p class="dashboard-card__value">{{ c.value }}</p>
+        <p class="dashboard-card__label">{{ c.label }}</p>
+      </a>
+    }
+  </div>
+
+  <p-message severity="secondary" styleClass="dashboard-notice text-sm w-full">
+    Los datos que administras aquí son temporales (mock) mientras se conecta la API real. Una vez lista,
+    los servicios en <code class="admin-page__code">core/services</code> harán las llamadas HTTP correspondientes
+    sin necesidad de cambiar estas pantallas.
+  </p-message>
+</section>

@@ -1,0 +1,52 @@
+<section class="page contacto-grid">
+  <div>
+    <p class="eyebrow">Estamos para ayudarte</p>
+    <h1 class="page-title contacto-title">Contáctanos</h1>
+    <p class="contacto-lead">
+      Para dudas sobre afiliación, competencias o alianzas institucionales, comunícate con nosotros.
+    </p>
+    <ul class="contact-list">
+      <li class="contact-list__item"><span class="contact-list__icon">&#128205;</span> Complejo Deportivo Nacional, Col. Miraflores,
+        Tegucigalpa, Honduras
+      </li>
+      <li class="contact-list__item"><span class="contact-list__icon">&#128222;</span> +504 2235-9184 / +504 2235-9185</li>
+      <li class="contact-list__item"><span class="contact-list__icon">&#9993;</span> contacto&#64;fehna.hn</li>
+    </ul>
+
+    <div class="contacto-map flex align-items-center justify-content-center">
+      Mapa de ubicación (pendiente de integración)
+    </div>
+  </div>
+
+  <form (ngSubmit)="submit()" class="form-card">
+    <h2 class="form-card__title">Enviar mensaje</h2>
+
+    @if (sent) {
+      <p-message severity="success" styleClass="form-message text-sm w-full"
+                 text="Tu mensaje fue enviado (demo). Te responderemos pronto."/>
+    }
+
+    <div class="form-grid">
+      <div class="field flex flex-column">
+        <span class="field__label">Nombre</span>
+        <input [(ngModel)]="form.name" fluid name="name" pInputText placeholder="Tu nombre"
+               required/>
+      </div>
+      <div class="field flex flex-column">
+        <span class="field__label">Correo</span>
+        <input [(ngModel)]="form.email" fluid name="email" pInputText
+               placeholder="correo@ejemplo.com" required
+               type="email"/>
+      </div>
+      <div class="field flex flex-column">
+        <span class="field__label">Asunto</span>
+        <p-select [(ngModel)]="form.subject" [options]="subjectOptions" fluid name="subject"/>
+      </div>
+      <div class="field flex flex-column">
+        <span class="field__label">Mensaje</span>
+        <textarea [(ngModel)]="form.message" fluid name="message" pTextarea rows="4"></textarea>
+      </div>
+      <button pButton rounded severity="primary" type="submit" class="mt-2">Enviar mensaje</button>
+    </div>
+  </form>
+</section>
