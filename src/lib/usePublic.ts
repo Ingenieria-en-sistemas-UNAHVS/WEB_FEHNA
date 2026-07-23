@@ -5,6 +5,7 @@
 // =====================================================================
 import { useEffect, useState } from "react";
 import { supabase } from "./supabase";
+import type { Enums } from "./supabase";
 import { calcularEdad, formatearTiempo } from "./tiempo";
 
 const MESES = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
@@ -143,6 +144,120 @@ export function useAtletas() {
     return () => { ok = false; };
   }, []);
   return { atletas: data, loading };
+}
+
+// ---------- Patrocinadores ----------
+export interface PatrocinadorUI {
+  id: number;
+  nombre: string;
+  logoUrl: string;
+}
+
+export function usePatrocinadores() {
+  const [data, setData] = useState<PatrocinadorUI[]>([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    let ok = true;
+    supabase
+      .from("patrocinadores")
+      .select("id,nombre,logo_url")
+      .eq("visible", true)
+      .order("orden", { ascending: true })
+      .then(({ data }) => {
+        if (!ok) return;
+        setData(
+          (data ?? []).map((p) => ({
+            id: p.id,
+            nombre: p.nombre,
+            logoUrl: p.logo_url,
+          }))
+        );
+        setLoading(false);
+      });
+    return () => { ok = false; };
+  }, []);
+  return { patrocinadores: data, loading };
+}
+
+// ---------- Configuración de secciones (mostrar/ocultar secciones enteras) ----------
+// Permite al admin apagar una sección completa del home (ej. "patrocinadores")
+// sin tener que ocultar cada registro individual. Por defecto asume visible
+// mientras carga, para no parpadear la sección en cada visita.
+export function useSeccionVisible(seccion: string) {
+  const [visible, setVisible] = useState(true);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    let ok = true;
+    supabase
+      .from("configuracion_secciones")
+      .select("visible")
+      .eq("seccion", seccion)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (!ok) return;
+        if (data) setVisible(data.visible);
+        setLoading(false);
+      });
+    return () => { ok = false; };
+  }, [seccion]);
+  return { visible, loading };
+}
+
+// ---------- Redes sociales ----------
+export interface RedSocialUI {
+  id: number;
+  red: Enums<"tipo_red_social">;
+  url: string;
+  orden: number;
+}
+
+export function useRedesSocialesPublicas() {
+  const [data, setData] = useState<RedSocialUI[]>([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    let ok = true;
+    supabase
+      .from("redes_sociales")
+      .select("id,red,url,orden")
+      .eq("visible", true)
+      .order("orden", { ascending: true })
+      .then(({ data }) => {
+        if (!ok) return;
+        setData((data ?? []) as RedSocialUI[]);
+        setLoading(false);
+      });
+    return () => { ok = false; };
+  }, []);
+  return { redesSociales: data, loading };
+}
+
+// ---------- Información de contacto ----------
+export interface ItemContactoUI {
+  id: number;
+  icono: string;
+  titulo: string;
+  descripcion: string;
+  orden: number;
+}
+
+export function useInformacionContactoPublica() {
+  const [data, setData] = useState<ItemContactoUI[]>([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    let ok = true;
+    supabase
+      .from("informacion_contacto")
+      .select("id,icono,titulo,descripcion,orden")
+      .eq("visible", true)
+      .order("orden", { ascending: true })
+      .then(({ data }) => {
+        if (!ok) return;
+        setData((data ?? []) as ItemContactoUI[]);
+        setLoading(false);
+      });
+    return () => { ok = false; };
+  }, []);
+  return { itemsContacto: data, loading };
 }
 
 // ---------- Tiempos (ranking) ----------

@@ -67,6 +67,27 @@ export type Database = {
         }
         Relationships: []
       }
+      configuracion_secciones: {
+        Row: {
+          actualizada_en: string
+          id: number
+          seccion: string
+          visible: boolean
+        }
+        Insert: {
+          actualizada_en?: string
+          id?: never
+          seccion: string
+          visible?: boolean
+        }
+        Update: {
+          actualizada_en?: string
+          id?: never
+          seccion?: string
+          visible?: boolean
+        }
+        Relationships: []
+      }
       deportistas: {
         Row: {
           activo: boolean
@@ -170,6 +191,110 @@ export type Database = {
           },
         ]
       }
+      informacion_contacto: {
+        Row: {
+          actualizada_en: string
+          creado_en: string
+          descripcion: string
+          icono: string
+          id: number
+          orden: number
+          titulo: string
+          visible: boolean
+        }
+        Insert: {
+          actualizada_en?: string
+          creado_en?: string
+          descripcion: string
+          icono: string
+          id?: never
+          orden?: number
+          titulo: string
+          visible?: boolean
+        }
+        Update: {
+          actualizada_en?: string
+          creado_en?: string
+          descripcion?: string
+          icono?: string
+          id?: never
+          orden?: number
+          titulo?: string
+          visible?: boolean
+        }
+        Relationships: []
+      }
+      medios: {
+        Row: {
+          actualizada_en: string
+          alto: number | null
+          ancho: number | null
+          bucket: string
+          creado_en: string
+          descripcion: string | null
+          entidad_id: number | null
+          es_portada: boolean
+          es_publico: boolean
+          id: number
+          mime_type: string | null
+          modulo: Database["public"]["Enums"]["modulo_medio"]
+          orden: number
+          path: string
+          subido_por: string | null
+          tamano_bytes: number | null
+          tipo: Database["public"]["Enums"]["tipo_medio"]
+          titulo: string | null
+        }
+        Insert: {
+          actualizada_en?: string
+          alto?: number | null
+          ancho?: number | null
+          bucket: string
+          creado_en?: string
+          descripcion?: string | null
+          entidad_id?: number | null
+          es_portada?: boolean
+          es_publico?: boolean
+          id?: never
+          mime_type?: string | null
+          modulo: Database["public"]["Enums"]["modulo_medio"]
+          orden?: number
+          path: string
+          subido_por?: string | null
+          tamano_bytes?: number | null
+          tipo?: Database["public"]["Enums"]["tipo_medio"]
+          titulo?: string | null
+        }
+        Update: {
+          actualizada_en?: string
+          alto?: number | null
+          ancho?: number | null
+          bucket?: string
+          creado_en?: string
+          descripcion?: string | null
+          entidad_id?: number | null
+          es_portada?: boolean
+          es_publico?: boolean
+          id?: never
+          mime_type?: string | null
+          modulo?: Database["public"]["Enums"]["modulo_medio"]
+          orden?: number
+          path?: string
+          subido_por?: string | null
+          tamano_bytes?: number | null
+          tipo?: Database["public"]["Enums"]["tipo_medio"]
+          titulo?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "medios_subido_por_fkey"
+            columns: ["subido_por"]
+            isOneToOne: false
+            referencedRelation: "perfiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       noticias: {
         Row: {
           actualizada_en: string
@@ -206,6 +331,36 @@ export type Database = {
           resumen?: string | null
           slug?: string
           titulo?: string
+        }
+        Relationships: []
+      }
+      patrocinadores: {
+        Row: {
+          actualizada_en: string
+          creado_en: string
+          id: number
+          logo_url: string
+          nombre: string
+          orden: number
+          visible: boolean
+        }
+        Insert: {
+          actualizada_en?: string
+          creado_en?: string
+          id?: never
+          logo_url: string
+          nombre: string
+          orden?: number
+          visible?: boolean
+        }
+        Update: {
+          actualizada_en?: string
+          creado_en?: string
+          id?: never
+          logo_url?: string
+          nombre?: string
+          orden?: number
+          visible?: boolean
         }
         Relationships: []
       }
@@ -258,6 +413,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      redes_sociales: {
+        Row: {
+          actualizada_en: string
+          creado_en: string
+          id: number
+          orden: number
+          red: Database["public"]["Enums"]["tipo_red_social"]
+          url: string
+          visible: boolean
+        }
+        Insert: {
+          actualizada_en?: string
+          creado_en?: string
+          id?: never
+          orden?: number
+          red: Database["public"]["Enums"]["tipo_red_social"]
+          url: string
+          visible?: boolean
+        }
+        Update: {
+          actualizada_en?: string
+          creado_en?: string
+          id?: never
+          orden?: number
+          red?: Database["public"]["Enums"]["tipo_red_social"]
+          url?: string
+          visible?: boolean
+        }
+        Relationships: []
       }
       tiempos: {
         Row: {
@@ -370,12 +555,31 @@ export type Database = {
     }
     Functions: {
       es_admin: { Args: never; Returns: boolean }
+      es_staff: { Args: never; Returns: boolean }
       formatear_tiempo: { Args: { t: number }; Returns: string }
       tiene_acceso_panel: { Args: never; Returns: boolean }
     }
     Enums: {
+      modulo_medio:
+        | "noticias"
+        | "eventos"
+        | "patrocinadores"
+        | "clubes"
+        | "deportistas"
+        | "documentos"
+        | "resultados"
       rol_tipo: "admin" | "digitador"
       sexo_tipo: "F" | "M"
+      tipo_medio: "imagen" | "documento"
+      tipo_red_social:
+        | "facebook"
+        | "instagram"
+        | "x"
+        | "youtube"
+        | "tiktok"
+        | "whatsapp"
+        | "linkedin"
+        | "threads"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -503,8 +707,28 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      modulo_medio: [
+        "noticias",
+        "eventos",
+        "patrocinadores",
+        "clubes",
+        "deportistas",
+        "documentos",
+        "resultados",
+      ],
       rol_tipo: ["admin", "digitador"],
       sexo_tipo: ["F", "M"],
+      tipo_medio: ["imagen", "documento"],
+      tipo_red_social: [
+        "facebook",
+        "instagram",
+        "x",
+        "youtube",
+        "tiktok",
+        "whatsapp",
+        "linkedin",
+        "threads",
+      ],
     },
   },
 } as const

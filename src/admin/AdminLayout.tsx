@@ -9,6 +9,8 @@ import {
   CalendarDays,
   Timer,
   Newspaper,
+  Handshake,
+  Phone,
   UserCog,
   LogOut,
   ShieldCheck,
@@ -22,6 +24,8 @@ import DeportistasAdmin from "./modules/DeportistasAdmin";
 import EventosAdmin from "./modules/EventosAdmin";
 import TiemposAdmin from "./modules/TiemposAdmin";
 import NoticiasAdmin from "./modules/NoticiasAdmin";
+import PatrocinadoresAdmin from "./modules/PatrocinadoresAdmin";
+import ContactoAdmin from "./modules/ContactoAdmin";
 import UsuariosAdmin from "./modules/UsuariosAdmin";
 
 const NAV = [
@@ -31,6 +35,8 @@ const NAV = [
   { ruta: "/admin/eventos", label: "Eventos", icon: CalendarDays },
   { ruta: "/admin/tiempos", label: "Tiempos", icon: Timer },
   { ruta: "/admin/noticias", label: "Noticias", icon: Newspaper, soloAdmin: true },
+  { ruta: "/admin/patrocinadores", label: "Patrocinadores", icon: Handshake, soloAdmin: true },
+  { ruta: "/admin/contacto", label: "Contáctanos", icon: Phone, soloAdmin: true },
   { ruta: "/admin/usuarios", label: "Usuarios", icon: UserCog, soloAdmin: true },
 ] as const;
 
@@ -46,6 +52,10 @@ export default function AdminLayout() {
       case "/admin/tiempos": return <TiemposAdmin />;
       case "/admin/noticias":
         return esAdmin ? <NoticiasAdmin /> : <SinPermiso />;
+      case "/admin/patrocinadores":
+        return esAdmin ? <PatrocinadoresAdmin /> : <SinPermiso />;
+      case "/admin/contacto":
+        return esAdmin ? <ContactoAdmin /> : <SinPermiso />;
       case "/admin/usuarios":
         return esAdmin ? <UsuariosAdmin /> : <SinPermiso />;
       default: return <Dashboard />;

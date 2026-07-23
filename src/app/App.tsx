@@ -1,7 +1,17 @@
 import { useState, useEffect, useMemo } from "react";
-import { Menu, X, ChevronRight, Calendar, Users, Trophy, Play, Mail, Phone, MapPin, ArrowRight, Star, Clock, Globe, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronRight, Calendar, Users, Trophy, Play, MapPin, ArrowRight, Star, Clock, Globe, ChevronDown } from "lucide-react";
 import { AdminLink } from "./components/AdminLink";
-import { useNoticiasPublicas, useEventosPublicos, useAtletas, useTiemposPublicos } from "@/lib/usePublic";
+import {
+  useNoticiasPublicas,
+  useEventosPublicos,
+  useAtletas,
+  useTiemposPublicos,
+  usePatrocinadores,
+  useSeccionVisible,
+  useRedesSocialesPublicas,
+  useInformacionContactoPublica,
+} from "@/lib/usePublic";
+import { REDES_SOCIALES_INFO, iconoContacto } from "@/lib/contactoIconos";
 
 const NAV_LINKS = [
   { label: "Inicio", href: "#inicio" },
@@ -112,17 +122,6 @@ const GALLERY = [
   { id: 4, src: "https://images.unsplash.com/photo-1544551763-77ef2d0cfc6c?w=400&h=300&fit=crop&auto=format", alt: "Entrenamiento acuático", span: "" },
   { id: 5, src: "https://images.unsplash.com/photo-1560090995-5e9c2a9c4fc8?w=400&h=300&fit=crop&auto=format", alt: "Waterpolo partido", span: "" },
   { id: 6, src: "https://images.unsplash.com/photo-1519315901367-f34ff9154487?w=600&h=300&fit=crop&auto=format", alt: "Nado sincronizado", span: "col-span-2" },
-];
-
-const SPONSORS = [
-  { name: "Banco Atlántida", tier: "Platino" },
-  { name: "Cerveza Salva Vida", tier: "Platino" },
-  { name: "Tigo Honduras", tier: "Oro" },
-  { name: "BANPAIS", tier: "Oro" },
-  { name: "Secretaría de Deportes", tier: "Oro" },
-  { name: "COH", tier: "Plata" },
-  { name: "Agua Crystal", tier: "Plata" },
-  { name: "Speedo Honduras", tier: "Plata" },
 ];
 
 const DISCIPLINES = ["Todos", "Natación", "Clavados", "Waterpolo", "Sincronizado"];
@@ -411,6 +410,10 @@ export default function App() {
   const { noticias } = useNoticiasPublicas();
   const { eventos } = useEventosPublicos();
   const { atletas } = useAtletas();
+  const { patrocinadores } = usePatrocinadores();
+  const { visible: seccionPatrocinadoresVisible } = useSeccionVisible("patrocinadores");
+  const { itemsContacto, loading: contactoLoading } = useInformacionContactoPublica();
+  const { redesSociales, loading: redesLoading } = useRedesSocialesPublicas();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -1108,7 +1111,8 @@ export default function App() {
       </section>
 
       {/* ── PATROCINADORES ── */}
-      <section className="py-16 bg-secondary border-y border-white/5">
+      {seccionPatrocinadoresVisible && (
+      <section className="py-16 bg-secondary border-y border-white/5 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-10">
             <div className="text-muted-foreground text-xs tracking-widest uppercase">Aliados estratégicos</div>
@@ -1119,162 +1123,145 @@ export default function App() {
               Nuestros Patrocinadores
             </h3>
           </div>
-
-          {/* Platino */}
-          <div className="mb-8">
-            <div className="text-center text-xs text-accent/60 tracking-widest uppercase mb-4">Patrocinador Platino</div>
-            <div className="flex justify-center gap-6 flex-wrap">
-              {SPONSORS.filter((s) => s.tier === "Platino").map((s) => (
-                <div
-                  key={s.name}
-                  className="px-8 py-5 bg-card border border-accent/20 rounded-lg text-white font-bold text-lg hover:border-accent transition-all duration-200 cursor-pointer min-w-[180px] text-center"
-                  style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
-                >
-                  {s.name}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Oro */}
-          <div className="mb-8">
-            <div className="text-center text-xs text-yellow-400/60 tracking-widest uppercase mb-4">Patrocinador Oro</div>
-            <div className="flex justify-center gap-4 flex-wrap">
-              {SPONSORS.filter((s) => s.tier === "Oro").map((s) => (
-                <div
-                  key={s.name}
-                  className="px-6 py-4 bg-card border border-yellow-400/10 rounded-lg text-white/80 font-semibold text-base hover:border-yellow-400/30 transition-all duration-200 cursor-pointer"
-                  style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
-                >
-                  {s.name}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Plata */}
-          <div>
-            <div className="text-center text-xs text-white/30 tracking-widest uppercase mb-4">Patrocinador Plata</div>
-            <div className="flex justify-center gap-3 flex-wrap">
-              {SPONSORS.filter((s) => s.tier === "Plata").map((s) => (
-                <div
-                  key={s.name}
-                  className="px-5 py-3 bg-card border border-white/5 rounded-lg text-white/50 font-medium text-sm hover:border-white/20 transition-all duration-200 cursor-pointer"
-                >
-                  {s.name}
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
+
+        {patrocinadores.length === 0 ? (
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="text-center py-8 text-white/30 text-sm border border-dashed border-white/10 rounded-xl">
+              Aún no hay patrocinadores publicados.
+            </div>
+          </div>
+        ) : (
+          <div className="group relative w-full overflow-hidden">
+            {/* Degradados en los bordes para suavizar la entrada/salida del scroll */}
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-secondary to-transparent" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-secondary to-transparent" />
+
+            <div className="patrocinadores-track flex w-max items-center gap-20 group-hover:[animation-play-state:paused]">
+              {[...patrocinadores, ...patrocinadores].map((p, i) => (
+                <div
+                  key={`${p.id}-${i}`}
+                  className="flex flex-shrink-0 flex-col items-center justify-center gap-3"
+                  style={{ minWidth: 220 }}
+                >
+                  <img
+                    src={p.logoUrl}
+                    alt={p.nombre}
+                    loading="lazy"
+                    className="h-24 w-auto max-w-[220px] object-contain opacity-80 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
+                  />
+                  <span className="text-lg font-semibold tracking-wide text-white/70 text-center">
+                    {p.nombre}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/*
+          Keyframes del scroll infinito: la lista se duplica arriba y el
+          track se desplaza -50% (el ancho de una copia) antes de
+          reiniciarse, quedando visualmente idéntico y sin saltos.
+        */}
+        <style>{`
+          @keyframes patrocinadoresScroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+          }
+          .patrocinadores-track {
+            animation: patrocinadoresScroll 30s linear infinite;
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .patrocinadores-track {
+              animation: none;
+            }
+          }
+        `}</style>
       </section>
+      )}
 
       {/* ── CONTACTO ── */}
       <section id="contacto" className="py-24 bg-background">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            <div>
-              <div className="text-accent text-xs tracking-widest uppercase mb-2">Estamos para ayudarte</div>
-              <h2
-                className="text-5xl font-black text-white uppercase"
-                style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
-              >
-                Contáctanos
-              </h2>
-              <p className="text-muted-foreground mt-4 leading-relaxed">
-                Para consultas sobre afiliación, competencias, patrocinios o cualquier asunto relacionado con la natación hondureña.
-              </p>
+          <div className="text-center mb-14">
+            <div className="text-accent text-xs tracking-widest uppercase mb-2">Estamos para ayudarte</div>
+            <h2
+              className="text-5xl font-black text-white uppercase"
+              style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
+            >
+              Contáctanos
+            </h2>
+            <p className="text-muted-foreground mt-4 leading-relaxed max-w-xl mx-auto">
+              Para consultas sobre afiliación, competencias, patrocinios o cualquier asunto relacionado con la natación hondureña.
+            </p>
+          </div>
 
-              <div className="mt-10 space-y-6">
-                {[
-                  { icon: MapPin, label: "Dirección", value: "Complejo Deportivo Nacional, Col. Miraflores, Tegucigalpa, Honduras" },
-                  { icon: Phone, label: "Teléfono", value: "+504 2235-0184 / +504 2235-0185" },
-                  { icon: Mail, label: "Correo", value: "contacto@fenah.hn / competencias@fenah.hn" },
-                  { icon: Globe, label: "Web", value: "www.fenah.hn" },
-                ].map(({ icon: Icon, label, value }) => (
-                  <div key={label} className="flex gap-4">
-                    <div className="w-10 h-10 bg-accent/10 border border-accent/20 rounded flex items-center justify-center shrink-0">
-                      <Icon size={16} className="text-accent" />
-                    </div>
-                    <div>
-                      <div className="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">{label}</div>
-                      <div className="text-white/80 text-sm">{value}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Social */}
-              <div className="mt-10">
-                <div className="text-xs text-muted-foreground uppercase tracking-wider mb-4">Redes Sociales</div>
-                <div className="flex gap-3">
-                  {["Facebook", "Instagram", "YouTube", "Twitter/X"].map((s) => (
-                    <button
-                      key={s}
-                      className="px-3 py-2 border border-white/10 rounded text-xs text-white/50 hover:border-accent hover:text-accent transition-all duration-200"
-                    >
-                      {s}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Contact form */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* Información de contacto */}
             <div className="bg-card rounded-xl border border-white/10 p-8">
               <h3
                 className="text-2xl font-black text-white uppercase mb-6"
                 style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
               >
-                Enviar Mensaje
+                Información de Contacto
               </h3>
-              <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-                <div>
-                  <label className="text-xs text-muted-foreground uppercase tracking-wider block mb-1.5">Nombre</label>
-                  <input
-                    type="text"
-                    className="w-full bg-secondary border border-white/10 rounded px-4 py-3 text-white text-sm focus:border-accent focus:outline-none transition-colors placeholder-white/20"
-                    placeholder="Tu nombre"
-                  />
+              {itemsContacto.length === 0 ? (
+                <p className="text-white/40 text-sm">
+                  {contactoLoading ? "Cargando…" : "Aún no hay información de contacto publicada."}
+                </p>
+              ) : (
+                <div className="space-y-6">
+                  {itemsContacto.map((item) => {
+                    const Icon = iconoContacto(item.icono);
+                    return (
+                      <div key={item.id} className="flex gap-4">
+                        <div className="w-10 h-10 bg-accent/10 border border-accent/20 rounded flex items-center justify-center shrink-0">
+                          <Icon size={16} className="text-accent" />
+                        </div>
+                        <div>
+                          <div className="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">{item.titulo}</div>
+                          <div className="text-white/80 text-sm">{item.descripcion}</div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-                <div>
-                  <label className="text-xs text-muted-foreground uppercase tracking-wider block mb-1.5">Correo</label>
-                  <input
-                    type="email"
-                    className="w-full bg-secondary border border-white/10 rounded px-4 py-3 text-white text-sm focus:border-accent focus:outline-none transition-colors placeholder-white/20"
-                    placeholder="correo@ejemplo.com"
-                  />
+              )}
+            </div>
+
+            {/* Redes sociales */}
+            <div className="bg-card rounded-xl border border-white/10 p-8">
+              <h3
+                className="text-2xl font-black text-white uppercase mb-6"
+                style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
+              >
+                Síguenos
+              </h3>
+              {redesSociales.length === 0 ? (
+                <p className="text-white/40 text-sm">
+                  {redesLoading ? "Cargando…" : "Aún no hay redes sociales publicadas."}
+                </p>
+              ) : (
+                <div className="flex flex-col gap-3">
+                  {redesSociales.map((r) => {
+                    const info = REDES_SOCIALES_INFO[r.red];
+                    const Icon = info.Icon;
+                    return (
+                      <a
+                        key={r.id}
+                        href={r.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center gap-3 px-4 py-3 border border-white/10 rounded text-white/70 hover:border-accent hover:text-accent transition-all duration-200"
+                      >
+                        <Icon size={18} />
+                        <span className="text-sm font-semibold">{info.label}</span>
+                      </a>
+                    );
+                  })}
                 </div>
-                <div>
-                  <label className="text-xs text-muted-foreground uppercase tracking-wider block mb-1.5">Asunto</label>
-                  <div className="relative">
-                    <select className="w-full bg-secondary border border-white/10 rounded px-4 py-3 text-white text-sm focus:border-accent focus:outline-none transition-colors appearance-none cursor-pointer">
-                      <option>Afiliación de nadador</option>
-                      <option>Registro de club</option>
-                      <option>Información sobre competencias</option>
-                      <option>Patrocinio</option>
-                      <option>Prensa y comunicaciones</option>
-                      <option>Otro</option>
-                    </select>
-                    <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
-                  </div>
-                </div>
-                <div>
-                  <label className="text-xs text-muted-foreground uppercase tracking-wider block mb-1.5">Mensaje</label>
-                  <textarea
-                    rows={4}
-                    className="w-full bg-secondary border border-white/10 rounded px-4 py-3 text-white text-sm focus:border-accent focus:outline-none transition-colors resize-none placeholder-white/20"
-                    placeholder="¿En qué podemos ayudarte?"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full py-4 bg-accent text-[#061529] font-black text-lg rounded hover:bg-white transition-all duration-200 tracking-widest uppercase"
-                  style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
-                >
-                  Enviar Mensaje
-                </button>
-              </form>
+              )}
             </div>
           </div>
         </div>
