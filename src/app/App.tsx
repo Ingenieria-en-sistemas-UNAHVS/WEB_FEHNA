@@ -1,5 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Menu, X, ChevronRight, Calendar, Users, Trophy, Play, Mail, Phone, MapPin, ArrowRight, Star, Clock, Globe, ChevronDown } from "lucide-react";
+import { AdminLink } from "./components/AdminLink";
+import { useNoticiasPublicas, useEventosPublicos, useAtletas, useTiemposPublicos } from "@/lib/usePublic";
 
 const NAV_LINKS = [
   { label: "Inicio", href: "#inicio" },
@@ -155,13 +157,24 @@ const TIEMPOS: {
 ];
 
 function RankingsSection() {
+  const { tiempos, loading } = useTiemposPublicos();
   const [prueba, setPrueba] = useState("Todas");
   const [categoria, setCategoria] = useState("Todas");
   const [search, setSearch] = useState("");
   const [sortCol, setSortCol] = useState<"pos" | "tiempo" | "nombre" | "club">("tiempo");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
 
-  const filtered = TIEMPOS
+  // Opciones de filtro derivadas de los datos reales
+  const PRUEBAS = useMemo(
+    () => ["Todas", ...Array.from(new Set(tiempos.map((t) => t.prueba).filter(Boolean)))],
+    [tiempos]
+  );
+  const CATEGORIAS_TABLA = useMemo(
+    () => ["Todas", ...Array.from(new Set(tiempos.map((t) => t.categoria).filter(Boolean)))],
+    [tiempos]
+  );
+
+  const filtered = tiempos
     .filter((r) => (prueba === "Todas" || r.prueba === prueba))
     .filter((r) => (categoria === "Todas" || r.categoria === categoria))
     .filter((r) =>
@@ -174,12 +187,8 @@ function RankingsSection() {
       let va: string | number = a[sortCol];
       let vb: string | number = b[sortCol];
       if (sortCol === "tiempo") {
-        const parse = (t: string) => {
-          const parts = t.split(":").map(Number);
-          return parts.length === 2 ? parts[0] * 60 + parts[1] : parts[0];
-        };
-        va = parse(a.tiempo);
-        vb = parse(b.tiempo);
+        va = a.centesimas;
+        vb = b.centesimas;
       }
       if (va < vb) return sortDir === "asc" ? -1 : 1;
       if (va > vb) return sortDir === "asc" ? 1 : -1;
@@ -311,7 +320,11 @@ function RankingsSection() {
                 {filtered.length === 0 ? (
                   <tr>
                     <td colSpan={9} className="text-center py-12 text-muted-foreground text-sm">
-                      No se encontraron resultados para los filtros seleccionados.
+                      {loading
+                        ? "Cargando tiempos…"
+                        : tiempos.length === 0
+                        ? "Aún no hay tiempos registrados."
+                        : "No se encontraron resultados para los filtros seleccionados."}
                     </td>
                   </tr>
                 ) : (
@@ -394,6 +407,11 @@ export default function App() {
   const [formSent, setFormSent] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
+  // Datos reales desde Supabase
+  const { noticias } = useNoticiasPublicas();
+  const { eventos } = useEventosPublicos();
+  const { atletas } = useAtletas();
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll);
@@ -401,8 +419,8 @@ export default function App() {
   }, []);
 
   const filteredEvents = calendarFilter === "Todos"
-    ? EVENTS
-    : EVENTS.filter((e) => e.discipline === calendarFilter);
+    ? eventos
+    : eventos.filter((e) => e.discipline === calendarFilter);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -645,30 +663,35 @@ export default function App() {
             </button>
           </div>
 
+          {noticias.length === 0 ? (
+            <div className="text-center py-16 text-white/40 text-sm border border-dashed border-white/10 rounded-xl">
+              Aún no hay noticias publicadas.
+            </div>
+          ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Featured */}
             <div className="lg:col-span-2 group cursor-pointer">
               <div className="relative overflow-hidden rounded-lg bg-card h-72 lg:h-96">
                 <img
-                  src={NEWS[0].image}
-                  alt={NEWS[0].title}
+                  src={noticias[0].image}
+                  alt={noticias[0].title}
                   className="w-full h-full object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#061529] via-[#061529]/20 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-6">
                   <span className="inline-block bg-accent text-[#061529] text-xs font-bold px-2 py-0.5 rounded mb-3 tracking-wider uppercase">
-                    {NEWS[0].category}
+                    {noticias[0].category}
                   </span>
                   <h3
                     className="text-2xl font-black text-white leading-tight"
                     style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
                   >
-                    {NEWS[0].title}
+                    {noticias[0].title}
                   </h3>
-                  <p className="text-white/60 text-sm mt-2 line-clamp-2">{NEWS[0].excerpt}</p>
+                  <p className="text-white/60 text-sm mt-2 line-clamp-2">{noticias[0].excerpt}</p>
                   <div className="flex items-center gap-2 mt-3 text-xs text-white/40">
                     <Clock size={12} />
-                    {NEWS[0].date}
+                    {noticias[0].date}
                   </div>
                 </div>
               </div>
@@ -676,7 +699,7 @@ export default function App() {
 
             {/* Side news */}
             <div className="flex flex-col gap-4">
-              {NEWS.slice(1).map((n) => (
+              {noticias.slice(1).map((n) => (
                 <div key={n.id} className="group flex gap-4 p-4 rounded-lg bg-card border border-white/5 hover:border-accent/30 transition-all duration-200 cursor-pointer">
                   <div className="w-20 h-20 shrink-0 rounded overflow-hidden bg-secondary">
                     <img src={n.image} alt={n.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300" />
@@ -693,6 +716,7 @@ export default function App() {
               ))}
             </div>
           </div>
+          )}
         </div>
       </section>
 
@@ -736,6 +760,11 @@ export default function App() {
             ))}
           </div>
 
+          {filteredEvents.length === 0 ? (
+            <div className="text-center py-16 text-white/40 text-sm border border-dashed border-white/10 rounded-xl">
+              No hay eventos en el calendario por ahora.
+            </div>
+          ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {filteredEvents.map((ev, i) => (
               <div
@@ -775,6 +804,7 @@ export default function App() {
               </div>
             ))}
           </div>
+          )}
         </div>
       </section>
 
@@ -794,25 +824,30 @@ export default function App() {
             </p>
           </div>
 
+          {atletas.length === 0 ? (
+            <div className="text-center py-16 text-white/40 text-sm border border-dashed border-white/10 rounded-xl">
+              Aún no hay deportistas registrados.
+            </div>
+          ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {ATHLETES.map((a, i) => (
+            {atletas.map((a, i) => (
               <div
-                key={a.name}
+                key={a.id}
                 className={`group relative rounded-xl overflow-hidden bg-card border cursor-pointer transition-all duration-300 ${
                   activeAthletes === i ? "border-accent shadow-lg shadow-accent/10" : "border-white/5 hover:border-accent/40"
                 }`}
                 onClick={() => setActiveAthletes(i)}
               >
-                <div className="relative h-56 overflow-hidden bg-secondary">
-                  <img
-                    src={a.image}
-                    alt={a.name}
-                    className="w-full h-full object-cover object-top opacity-75 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
+                <div className="relative h-40 overflow-hidden bg-secondary flex items-center justify-center">
+                  <span
+                    className="text-6xl font-black text-white/10"
+                    style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
+                  >
+                    {a.name.split(" ").map((p) => p[0]).slice(0, 2).join("")}
+                  </span>
                   <div className="absolute top-3 left-3">
                     <span className="text-xs bg-accent text-[#061529] font-bold px-2 py-0.5 rounded tracking-wider uppercase">
-                      {a.discipline}
+                      {a.sexo === "F" ? "Femenino" : "Masculino"}
                     </span>
                   </div>
                 </div>
@@ -824,7 +859,7 @@ export default function App() {
                   >
                     {a.name}
                   </h3>
-                  <p className="text-muted-foreground text-sm mt-0.5">{a.specialty}</p>
+                  <p className="text-muted-foreground text-sm mt-0.5">{a.club}</p>
 
                   <div className="mt-4 pt-4 border-t border-white/5 flex justify-between">
                     <div className="text-center">
@@ -832,30 +867,29 @@ export default function App() {
                         className="text-2xl font-black text-accent"
                         style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
                       >
-                        {a.medals}
+                        {a.edad}
                       </div>
-                      <div className="text-xs text-muted-foreground">Medallas</div>
+                      <div className="text-xs text-muted-foreground">Años</div>
                     </div>
                     <div className="text-center">
                       <div
                         className="text-2xl font-black text-accent"
                         style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
                       >
-                        {a.records}
+                        {a.marcas}
                       </div>
-                      <div className="text-xs text-muted-foreground">Récords</div>
+                      <div className="text-xs text-muted-foreground">Marcas</div>
                     </div>
                     <div className="text-center">
                       <Trophy size={14} className="text-accent mx-auto mt-1" />
-                      <div className="text-xs text-muted-foreground mt-0.5">Campeón</div>
+                      <div className="text-xs text-muted-foreground mt-0.5">FEHNA</div>
                     </div>
                   </div>
-
-                  <div className="mt-3 text-xs text-accent/80 italic">{a.highlight}</div>
                 </div>
               </div>
             ))}
           </div>
+          )}
 
           <div className="text-center mt-10">
             <button className="flex items-center gap-2 mx-auto px-6 py-3 border border-white/20 text-white hover:border-accent hover:text-accent transition-all duration-200 rounded text-sm">
@@ -1309,10 +1343,11 @@ export default function App() {
             <p className="text-muted-foreground text-xs">
               © 2025 Federación Hondureña de Natación · Todos los derechos reservados
             </p>
-            <div className="flex gap-6 text-xs text-muted-foreground">
+            <div className="flex gap-6 text-xs text-muted-foreground items-center">
               <span className="hover:text-accent cursor-pointer transition-colors">Política de Privacidad</span>
               <span className="hover:text-accent cursor-pointer transition-colors">Términos de Uso</span>
               <span className="hover:text-accent cursor-pointer transition-colors">Mapa del Sitio</span>
+              <AdminLink />
             </div>
           </div>
         </div>

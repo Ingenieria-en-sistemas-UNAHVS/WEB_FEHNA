@@ -1,2 +1,8 @@
 node_modules/
 dist/
+
+# Variables de entorno (contienen credenciales; no versionar)
+.env
+.env.local
+.env.*.local
+!.env.example
