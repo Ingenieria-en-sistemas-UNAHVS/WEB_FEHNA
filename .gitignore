@@ -1,5 +1,6 @@
 node_modules/
-dist/
+.next/
+next-env.d.ts
 
 # Variables de entorno (contienen credenciales; no versionar)
 .env
