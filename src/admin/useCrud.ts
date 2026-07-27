@@ -7,7 +7,7 @@
 // en `error` para mostrarlo en la interfaz.
 // =====================================================================
 import { useCallback, useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { createBrowserClient } from "@/lib/supabase/client";
 
 interface Opciones {
   select?: string;
@@ -26,7 +26,8 @@ export function useCrud<Row extends { id: number }>(
   const cargar = useCallback(async () => {
     setLoading(true);
     setError(null);
-    let q = supabase.from(tabla).select(select);
+    const supabase = createBrowserClient();
+    let q = (supabase.from as any)(tabla).select(select);
     if (orderBy) q = q.order(orderBy.column, { ascending: orderBy.ascending ?? true });
     const { data, error } = await q;
     if (error) setError(error.message);
@@ -40,21 +41,24 @@ export function useCrud<Row extends { id: number }>(
   }, [cargar]);
 
   async function crear(valores: Record<string, unknown>) {
-    const { error } = await supabase.from(tabla).insert(valores as never);
+    const supabase = createBrowserClient();
+    const { error } = await (supabase.from as any)(tabla).insert(valores as never);
     if (error) return { error: error.message };
     await cargar();
     return { error: null };
   }
 
   async function actualizar(id: number, valores: Record<string, unknown>) {
-    const { error } = await supabase.from(tabla).update(valores as never).eq("id", id);
+    const supabase = createBrowserClient();
+    const { error } = await (supabase.from as any)(tabla).update(valores as never).eq("id", id);
     if (error) return { error: error.message };
     await cargar();
     return { error: null };
   }
 
   async function eliminar(id: number) {
-    const { error } = await supabase.from(tabla).delete().eq("id", id);
+    const supabase = createBrowserClient();
+    const { error } = await (supabase.from as any)(tabla).delete().eq("id", id);
     if (error) return { error: error.message };
     await cargar();
     return { error: null };

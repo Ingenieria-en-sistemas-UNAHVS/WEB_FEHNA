@@ -1,9 +1,9 @@
 // Panel principal — resumen de conteos con accesos a los módulos.
 import { useEffect, useState } from "react";
 import { Users, Building2, CalendarDays, Timer, Newspaper, UserCog } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { createBrowserClient } from "@/lib/supabase/client";
 import { useAuth } from "@/auth/AuthProvider";
-import { Link } from "@/lib/router";
+import Link from "next/link";
 
 const TARJETAS = [
   { tabla: "clubes", label: "Clubes", ruta: "/admin/clubes", icon: Building2 },
@@ -20,8 +20,9 @@ export default function Dashboard() {
 
   useEffect(() => {
     let activo = true;
+    const supabase = createBrowserClient();
     (async () => {
-      const tablas = ["clubes", "deportistas", "eventos", "tiempos", "noticias", "perfiles"];
+      const tablas = ["clubes", "deportistas", "eventos", "tiempos", "noticias", "perfiles"] as const;
       const res = await Promise.all(
         tablas.map((t) => supabase.from(t).select("*", { count: "exact", head: true }))
       );
@@ -44,7 +45,7 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
         {visibles.map(({ tabla, label, ruta, icon: Icon }) => (
-          <Link key={tabla} to={ruta} className="bg-card border border-white/5 rounded-xl p-5 hover:border-accent/40 transition-all group">
+          <Link key={tabla} href={ruta} className="bg-card border border-white/5 rounded-xl p-5 hover:border-accent/40 transition-all group">
             <Icon size={18} className="text-accent mb-3" />
             <div className="text-3xl font-black text-white group-hover:text-accent transition-colors" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
               {conteos[tabla] ?? "—"}

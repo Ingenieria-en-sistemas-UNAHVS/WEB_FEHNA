@@ -1,6 +1,6 @@
 // Módulo Noticias — CRUD real (tabla public.noticias). Solo admin.
 import { useState } from "react";
-import type { Tables } from "@/lib/supabase";
+import type { Tables } from "@/lib/database.types";
 import { useCrud } from "../useCrud";
 import {
   Boton,

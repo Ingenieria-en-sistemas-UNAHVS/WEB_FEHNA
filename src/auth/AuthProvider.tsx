@@ -1,3 +1,5 @@
+"use client";
+
 // =====================================================================
 // AuthProvider (FEHNA) — contexto de autenticación
 // ---------------------------------------------------------------------
@@ -13,8 +15,8 @@ import {
   type ReactNode,
 } from "react";
 import type { Session } from "@supabase/supabase-js";
-import { supabase } from "@/lib/supabase";
-import type { Tables } from "@/lib/supabase";
+import { createBrowserClient } from "@/lib/supabase/client";
+import type { Tables } from "@/lib/database.types";
 
 type Perfil = Pick<Tables<"perfiles">, "id" | "nombre" | "rol" | "activo">;
 
@@ -45,6 +47,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .single();
       if (activo) setPerfil((data as Perfil) ?? null);
     }
+
+    const supabase = createBrowserClient();
 
     // Sesión inicial
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -79,6 +83,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   async function cerrarSesion() {
+    const supabase = createBrowserClient();
     await supabase.auth.signOut();
     setPerfil(null);
   }

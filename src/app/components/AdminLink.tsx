@@ -5,13 +5,13 @@
 // ruta /admin (protegida). No muestra texto "Admin" al público general,
 // pero conserva aria-label para accesibilidad.
 // =====================================================================
-import { Link } from "@/lib/router";
+import Link from "next/link";
 import { Lock } from "lucide-react";
 
 export function AdminLink() {
   return (
     <Link
-      to="/admin"
+      href="/admin"
       aria-label="Acceso administrativo"
       title="Acceso administrativo"
       className="inline-flex items-center text-white/20 hover:text-accent transition-colors"

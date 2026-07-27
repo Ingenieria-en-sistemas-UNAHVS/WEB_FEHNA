@@ -4,7 +4,7 @@
 // Debe reflejar los límites definidos en los buckets de Supabase
 // (mime types y tamaño). Si cambias un bucket, actualiza también aquí.
 // =====================================================================
-import type { Enums } from "@/lib/supabase";
+import type { Enums } from "@/lib/database.types";
 
 export type Modulo = Enums<"modulo_medio">;
 export type TipoMedio = Enums<"tipo_medio">;

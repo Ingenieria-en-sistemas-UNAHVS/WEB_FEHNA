@@ -3,7 +3,7 @@
 //   del lado servidor). Nunca se expone la clave de servicio al navegador.
 // - Editar nombre / rol / estado: directo por RLS (solo admin).
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { createBrowserClient } from "@/lib/supabase/client";
 import { useAuth } from "@/auth/AuthProvider";
 import { ShieldCheck } from "lucide-react";
 import {
@@ -29,6 +29,7 @@ interface Perfil {
 
 // Invoca la Edge Function y normaliza el mensaje de error.
 async function invocar(body: Record<string, unknown>): Promise<{ error: string | null }> {
+  const supabase = createBrowserClient();
   const { data, error } = await supabase.functions.invoke("gestion-usuarios", { body });
   if (error) {
     let msg = error.message;
@@ -50,6 +51,7 @@ export default function UsuariosAdmin() {
 
   async function cargar() {
     setLoading(true);
+    const supabase = createBrowserClient();
     const { data, error } = await supabase
       .from("perfiles")
       .select("id,nombre,rol,activo,creado_en")
@@ -99,6 +101,7 @@ export default function UsuariosAdmin() {
     e.preventDefault();
     setGuardando(true);
     setErrEdit(null);
+    const supabase = createBrowserClient();
     const { error } = await supabase
       .from("perfiles")
       .update({ nombre: form.nombre.trim(), rol: form.rol, activo: form.activo })
