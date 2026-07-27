@@ -66,12 +66,8 @@ export default function AdminPanel() {
       <header className="border-b border-white/10 bg-[#061529]">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-accent flex items-center justify-center shrink-0">
-              <svg viewBox="0 0 40 40" className="w-6 h-6" fill="none">
-                <circle cx="20" cy="20" r="18" fill="#061529" />
-                <path d="M8 22 Q14 16 20 22 Q26 28 32 22" stroke="#00C8E0" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                <path d="M8 18 Q14 12 20 18 Q26 24 32 18" stroke="white" strokeWidth="2" fill="none" strokeLinecap="round" />
-              </svg>
+            <div className="w-9 h-9 rounded-full overflow-hidden bg-white flex items-center justify-center shrink-0">
+              <img src="/favicon.png" alt="Logo FEHNA" className="w-full h-full object-cover" />
             </div>
             <div>
               <div
