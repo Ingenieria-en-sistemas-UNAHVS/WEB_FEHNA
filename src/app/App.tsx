@@ -442,13 +442,8 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
           {/* Logo */}
           <button onClick={() => scrollTo("inicio")} className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center shrink-0">
-              <svg viewBox="0 0 40 40" className="w-7 h-7" fill="none">
-                <circle cx="20" cy="20" r="18" fill="#061529" />
-                <path d="M8 22 Q14 16 20 22 Q26 28 32 22" stroke="#00C8E0" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                <path d="M8 18 Q14 12 20 18 Q26 24 32 18" stroke="white" strokeWidth="2" fill="none" strokeLinecap="round" />
-                <circle cx="20" cy="13" r="3" fill="#00C8E0" />
-              </svg>
+            <div className="w-10 h-10 rounded-full overflow-hidden bg-white flex items-center justify-center shrink-0">
+              <img src="/favicon.png" alt="Logo FEHNA" className="w-full h-full object-cover" />
             </div>
             <div className="hidden sm:block">
               <div className="text-white font-bold text-sm leading-none tracking-wide" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>FEHNA</div>
@@ -1187,13 +1182,8 @@ export default function App() {
             {/* Brand */}
             <div className="lg:col-span-2">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center shrink-0">
-                  <svg viewBox="0 0 40 40" className="w-7 h-7" fill="none">
-                    <circle cx="20" cy="20" r="18" fill="#061529" />
-                    <path d="M8 22 Q14 16 20 22 Q26 28 32 22" stroke="#00C8E0" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                    <path d="M8 18 Q14 12 20 18 Q26 24 32 18" stroke="white" strokeWidth="2" fill="none" strokeLinecap="round" />
-                    <circle cx="20" cy="13" r="3" fill="#00C8E0" />
-                  </svg>
+                <div className="w-10 h-10 rounded-full overflow-hidden bg-white flex items-center justify-center shrink-0">
+                  <img src="/favicon.png" alt="Logo FEHNA" className="w-full h-full object-cover" />
                 </div>
                 <div>
                   <div
