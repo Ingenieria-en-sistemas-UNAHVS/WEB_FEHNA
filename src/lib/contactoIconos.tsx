@@ -26,7 +26,7 @@ import {
   Printer,
   type LucideIcon,
 } from "lucide-react";
-import type { Enums } from "./supabase";
+import type { Enums } from "./database.types";
 
 // ---------- Redes sociales (catálogo fijo, enum tipo_red_social) ----------
 export const REDES_SOCIALES_INFO: Record<

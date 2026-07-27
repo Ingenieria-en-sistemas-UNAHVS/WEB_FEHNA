@@ -1,7 +1,7 @@
 // Módulo Patrocinadores — CRUD real (tabla public.patrocinadores). Solo admin.
 import { useEffect, useState } from "react";
-import type { Tables } from "@/lib/supabase";
-import { supabase } from "@/lib/supabase";
+import type { Tables } from "@/lib/database.types";
+import { createBrowserClient } from "@/lib/supabase/client";
 import { useCrud } from "../useCrud";
 import {
   Boton,
@@ -40,6 +40,7 @@ function useSeccionCompleta() {
 
   useEffect(() => {
     let ok = true;
+    const supabase = createBrowserClient();
     supabase
       .from("configuracion_secciones")
       .select("visible")
@@ -61,6 +62,7 @@ function useSeccionCompleta() {
     setVisible(v);
     setGuardando(true);
     setError(null);
+    const supabase = createBrowserClient();
     const { error } = await supabase
       .from("configuracion_secciones")
       .update({ visible: v })
@@ -123,6 +125,7 @@ export default function PatrocinadoresAdmin() {
   async function subirLogo(file: File): Promise<string> {
     const extension = file.name.split(".").pop() ?? "png";
     const ruta = `${crypto.randomUUID()}.${extension}`;
+    const supabase = createBrowserClient();
     const { error } = await supabase.storage.from(BUCKET_LOGOS).upload(ruta, file);
     if (error) throw new Error(`No se pudo subir el logo: ${error.message}`);
     const { data } = supabase.storage.from(BUCKET_LOGOS).getPublicUrl(ruta);

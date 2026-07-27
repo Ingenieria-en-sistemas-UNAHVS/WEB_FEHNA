@@ -1,7 +1,7 @@
 // Módulo Clubes — CRUD real contra Supabase (tabla public.clubes)
 import { useState } from "react";
 import { Plus, Pencil, Trash2 } from "lucide-react";
-import type { Tables } from "@/lib/supabase";
+import type { Tables } from "@/lib/database.types";
 import { useCrud } from "../useCrud";
 import {
   Boton,

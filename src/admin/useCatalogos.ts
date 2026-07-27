@@ -3,7 +3,7 @@
 // como opciones en los formularios (clubes, pruebas, categorías, etc.).
 // =====================================================================
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { createBrowserClient } from "@/lib/supabase/client";
 
 export interface Opcion {
   id: number;
@@ -32,6 +32,7 @@ export function useCatalogos(): Catalogos {
   useEffect(() => {
     let cancelado = false;
     async function cargar() {
+      const supabase = createBrowserClient();
       const [clubes, pruebas, categorias, piscinas, estilos] = await Promise.all([
         supabase.from("clubes").select("id,nombre").order("nombre"),
         supabase

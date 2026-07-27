@@ -16,7 +16,7 @@ import {
 } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { createBrowserClient } from "@/lib/supabase/client";
-import type { Tables } from "@/lib/supabase";
+import type { Tables } from "@/lib/database.types";
 
 type Perfil = Pick<Tables<"perfiles">, "id" | "nombre" | "rol" | "activo">;
 

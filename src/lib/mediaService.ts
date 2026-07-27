@@ -11,8 +11,8 @@
 //  - Las políticas RLS/Storage garantizan que solo admin/digitador puede
 //    escribir; la validación de cliente es solo UX.
 // =====================================================================
-import { supabase } from "@/lib/supabase";
-import type { Tables } from "@/lib/supabase";
+import { createBrowserClient } from "@/lib/supabase/client";
+import type { Tables } from "@/lib/database.types";
 import {
   MEDIA_CONFIG,
   BUCKET_PRIVADO,
@@ -70,6 +70,7 @@ async function medirImagen(file: File): Promise<{ ancho?: number; alto?: number 
 
 /** Sube un archivo y registra la fila en `medios`. Devuelve el Medio (con url). */
 export async function subirMedio(opts: SubirOpciones): Promise<Medio> {
+  const supabase = createBrowserClient();
   const { modulo, entidadId = null, file } = opts;
   const esPublico = opts.esPublico ?? true;
   const cfg = MEDIA_CONFIG[modulo];
@@ -137,6 +138,7 @@ export async function subirVarios(
 
 /** Devuelve una URL utilizable: pública directa o firmada (privado, 1h). */
 export async function obtenerUrl(medio: Medio, expiraSeg = 3600): Promise<string> {
+  const supabase = createBrowserClient();
   if (medio.es_publico) {
     return supabase.storage.from(medio.bucket).getPublicUrl(medio.path).data.publicUrl;
   }
@@ -152,6 +154,7 @@ export async function listarMedios(params: {
   modulo: Modulo;
   entidadId?: number | null;
 }): Promise<Medio[]> {
+  const supabase = createBrowserClient();
   let q = supabase
     .from("medios")
     .select("*")
@@ -174,6 +177,7 @@ export async function obtenerPortada(
   modulo: Modulo,
   entidadId: number,
 ): Promise<Medio | null> {
+  const supabase = createBrowserClient();
   const { data, error } = await supabase
     .from("medios")
     .select("*")
@@ -191,6 +195,7 @@ export async function obtenerPortada(
 export async function eliminarMedio(
   medio: Pick<Medio, "id" | "bucket" | "path">,
 ): Promise<void> {
+  const supabase = createBrowserClient();
   const { error: sErr } = await supabase.storage.from(medio.bucket).remove([medio.path]);
   if (sErr) throw new MediaError(`Error al borrar el archivo: ${sErr.message}`);
   const { error: dErr } = await supabase.from("medios").delete().eq("id", medio.id);
@@ -212,6 +217,7 @@ export async function marcarPortada(
   entidadId: number,
   medioId: number,
 ): Promise<void> {
+  const supabase = createBrowserClient();
   // 1) quitar portada actual  2) asignar la nueva
   await supabase
     .from("medios")
@@ -228,6 +234,7 @@ export async function marcarPortada(
 
 /** Reordena una galería: recibe los ids en el orden deseado. */
 export async function reordenar(ids: number[]): Promise<void> {
+  const supabase = createBrowserClient();
   await Promise.all(
     ids.map((id, i) => supabase.from("medios").update({ orden: i }).eq("id", id)),
   );

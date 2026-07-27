@@ -1,7 +1,5 @@
-// =====================================================================
-// AdminLayout (FEHNA) — shell del panel: barra superior + navegación
-// lateral. Selecciona el módulo según la ruta (mini-router propio).
-// =====================================================================
+"use client";
+
 import {
   LayoutDashboard,
   Building2,
@@ -15,18 +13,9 @@ import {
   LogOut,
   ShieldCheck,
 } from "lucide-react";
-import { Link, useLocation } from "@/lib/router";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useAuth } from "@/auth/AuthProvider";
-
-import Dashboard from "./modules/Dashboard";
-import ClubesAdmin from "./modules/ClubesAdmin";
-import DeportistasAdmin from "./modules/DeportistasAdmin";
-import EventosAdmin from "./modules/EventosAdmin";
-import TiemposAdmin from "./modules/TiemposAdmin";
-import NoticiasAdmin from "./modules/NoticiasAdmin";
-import PatrocinadoresAdmin from "./modules/PatrocinadoresAdmin";
-import ContactoAdmin from "./modules/ContactoAdmin";
-import UsuariosAdmin from "./modules/UsuariosAdmin";
 
 const NAV = [
   { ruta: "/admin", label: "Panel", icon: LayoutDashboard },
@@ -40,36 +29,17 @@ const NAV = [
   { ruta: "/admin/usuarios", label: "Usuarios", icon: UserCog, soloAdmin: true },
 ] as const;
 
-export default function AdminLayout() {
-  const { pathname } = useLocation();
+export function AdminShell({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
   const { perfil, esAdmin, cerrarSesion } = useAuth();
-
-  function Modulo() {
-    switch (pathname) {
-      case "/admin/clubes": return <ClubesAdmin />;
-      case "/admin/deportistas": return <DeportistasAdmin />;
-      case "/admin/eventos": return <EventosAdmin />;
-      case "/admin/tiempos": return <TiemposAdmin />;
-      case "/admin/noticias":
-        return esAdmin ? <NoticiasAdmin /> : <SinPermiso />;
-      case "/admin/patrocinadores":
-        return esAdmin ? <PatrocinadoresAdmin /> : <SinPermiso />;
-      case "/admin/contacto":
-        return esAdmin ? <ContactoAdmin /> : <SinPermiso />;
-      case "/admin/usuarios":
-        return esAdmin ? <UsuariosAdmin /> : <SinPermiso />;
-      default: return <Dashboard />;
-    }
-  }
 
   const nav = NAV.filter((n) => !("soloAdmin" in n && n.soloAdmin) || esAdmin);
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col" style={{ fontFamily: "'Outfit', sans-serif" }}>
-      {/* Barra superior */}
       <header className="border-b border-white/10 bg-[#061529] shrink-0">
         <div className="px-4 py-3 flex items-center justify-between">
-          <Link to="/admin" className="flex items-center gap-3">
+          <Link href="/admin" className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-full overflow-hidden bg-white flex items-center justify-center shrink-0">
               <img src="/favicon.png" alt="Logo FEHNA" className="w-full h-full object-cover" />
             </div>
@@ -94,14 +64,13 @@ export default function AdminLayout() {
       </header>
 
       <div className="flex flex-1 min-h-0">
-        {/* Navegación lateral */}
         <nav className="w-16 sm:w-56 border-r border-white/10 bg-[#04101f] shrink-0 py-4">
           {nav.map(({ ruta, label, icon: Icon }) => {
             const activo = pathname === ruta;
             return (
               <Link
                 key={ruta}
-                to={ruta}
+                href={ruta}
                 className={`flex items-center gap-3 px-4 sm:px-5 py-3 text-sm transition-colors ${
                   activo ? "text-accent bg-accent/10 border-r-2 border-accent" : "text-white/60 hover:text-white hover:bg-white/5"
                 }`}
@@ -111,25 +80,16 @@ export default function AdminLayout() {
               </Link>
             );
           })}
-          <Link to="/" className="flex items-center gap-3 px-4 sm:px-5 py-3 text-sm text-white/40 hover:text-white/70 mt-4">
+          <Link href="/" className="flex items-center gap-3 px-4 sm:px-5 py-3 text-sm text-white/40 hover:text-white/70 mt-4">
             <span className="hidden sm:inline">← Volver al sitio</span>
             <span className="sm:hidden">←</span>
           </Link>
         </nav>
 
-        {/* Contenido */}
         <main className="flex-1 min-w-0 p-5 sm:p-8 overflow-x-auto">
-          <Modulo />
+          {children}
         </main>
       </div>
-    </div>
-  );
-}
-
-function SinPermiso() {
-  return (
-    <div className="text-center py-16 text-white/50 text-sm">
-      Esta sección es solo para administradores.
     </div>
   );
 }

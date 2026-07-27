@@ -7,8 +7,8 @@
 // La API igual rechaza cualquier escritura no autorizada por RLS, esto
 // es solo la capa de usabilidad del cliente.
 // =====================================================================
-import type { ReactNode } from "react";
-import { Navigate } from "@/lib/router";
+import { type ReactNode, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useAuth } from "./AuthProvider";
 
 export function RequireAuth({
@@ -29,7 +29,7 @@ export function RequireAuth({
   }
 
   if (!session) {
-    return <Navigate to="/admin/login" replace />;
+    return <RedirectTo to="/admin/login" />;
   }
 
   if (!tieneAcceso) {
@@ -52,8 +52,16 @@ export function RequireAuth({
   }
 
   if (soloAdmin && !esAdmin) {
-    return <Navigate to="/admin" replace />;
+    return <RedirectTo to="/admin" />;
   }
 
   return <>{children}</>;
+}
+
+function RedirectTo({ to }: { to: string }) {
+  const router = useRouter();
+  useEffect(() => {
+    router.replace(to);
+  }, [to, router]);
+  return null;
 }

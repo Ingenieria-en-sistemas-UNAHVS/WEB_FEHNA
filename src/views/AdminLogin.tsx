@@ -5,9 +5,10 @@
 // Mensaje de error genérico (no revela si el correo existe).
 // =====================================================================
 import { useState, type FormEvent } from "react";
-import { useNavigate, Link } from "@/lib/router";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Lock, ArrowLeft } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { createBrowserClient } from "@/lib/supabase/client";
 import { useAuth } from "@/auth/AuthProvider";
 
 export default function AdminLogin() {
@@ -16,14 +17,14 @@ export default function AdminLogin() {
   const [error, setError] = useState("");
   const [enviando, setEnviando] = useState(false);
 
-  const navigate = useNavigate();
+  const router = useRouter();
   const { session } = useAuth();
 
   const destino = "/admin";
 
   // Ya autenticado → al panel
   if (session) {
-    navigate(destino, { replace: true });
+    router.replace(destino);
     return null;
   }
 
@@ -31,6 +32,7 @@ export default function AdminLogin() {
     e.preventDefault();
     setError("");
     setEnviando(true);
+    const supabase = createBrowserClient();
     const { error } = await supabase.auth.signInWithPassword({
       email: email.trim(),
       password,
@@ -40,14 +42,14 @@ export default function AdminLogin() {
       setError("Credenciales incorrectas. Verifica tu correo y contraseña.");
       return;
     }
-    navigate(destino, { replace: true });
+    router.replace(destino);
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <div className="w-full max-w-sm">
         <Link
-          to="/"
+          href="/"
           className="inline-flex items-center gap-1.5 text-white/40 hover:text-accent text-xs mb-6 transition-colors"
         >
           <ArrowLeft size={14} /> Volver al sitio

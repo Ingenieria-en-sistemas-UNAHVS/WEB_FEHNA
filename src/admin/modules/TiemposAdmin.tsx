@@ -3,7 +3,7 @@
 // El tiempo se ingresa como texto ("57.43" o "2:14.56") y se guarda en
 // centésimas. edad_evento se calcula del nacimiento y la fecha del evento.
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { createBrowserClient } from "@/lib/supabase/client";
 import { useAuth } from "@/auth/AuthProvider";
 import { useCrud } from "../useCrud";
 import { useCatalogos } from "../useCatalogos";
@@ -63,6 +63,7 @@ export default function TiemposAdmin() {
   const [eventos, setEventos] = useState<EventoOpt[]>([]);
 
   useEffect(() => {
+    const supabase = createBrowserClient();
     supabase.from("deportistas").select("id,nombres,apellidos,fecha_nacimiento").eq("activo", true).order("apellidos")
       .then(({ data }) => setDeportistas((data as DeportistaOpt[]) ?? []));
     supabase.from("eventos").select("id,nombre,fecha_inicio").order("fecha_inicio", { ascending: false })
