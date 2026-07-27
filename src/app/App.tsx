@@ -8,10 +8,8 @@ import {
   useTiemposPublicos,
   usePatrocinadores,
   useSeccionVisible,
-  useRedesSocialesPublicas,
-  useInformacionContactoPublica,
 } from "@/lib/usePublic";
-import { REDES_SOCIALES_INFO, iconoContacto } from "@/lib/contactoIconos";
+import { ContactsSection } from "@/modules/home/sections/contacts";
 
 const NAV_LINKS = [
   { label: "Inicio", href: "#inicio" },
@@ -412,8 +410,6 @@ export default function App() {
   const { atletas } = useAtletas();
   const { patrocinadores } = usePatrocinadores();
   const { visible: seccionPatrocinadoresVisible } = useSeccionVisible("patrocinadores");
-  const { itemsContacto, loading: contactoLoading } = useInformacionContactoPublica();
-  const { redesSociales, loading: redesLoading } = useRedesSocialesPublicas();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -1182,90 +1178,7 @@ export default function App() {
       )}
 
       {/* ── CONTACTO ── */}
-      <section id="contacto" className="py-24 bg-background">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-14">
-            <div className="text-accent text-xs tracking-widest uppercase mb-2">Estamos para ayudarte</div>
-            <h2
-              className="text-5xl font-black text-white uppercase"
-              style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
-            >
-              Contáctanos
-            </h2>
-            <p className="text-muted-foreground mt-4 leading-relaxed max-w-xl mx-auto">
-              Para consultas sobre afiliación, competencias, patrocinios o cualquier asunto relacionado con la natación hondureña.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {/* Información de contacto */}
-            <div className="bg-card rounded-xl border border-white/10 p-8">
-              <h3
-                className="text-2xl font-black text-white uppercase mb-6"
-                style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
-              >
-                Información de Contacto
-              </h3>
-              {itemsContacto.length === 0 ? (
-                <p className="text-white/40 text-sm">
-                  {contactoLoading ? "Cargando…" : "Aún no hay información de contacto publicada."}
-                </p>
-              ) : (
-                <div className="space-y-6">
-                  {itemsContacto.map((item) => {
-                    const Icon = iconoContacto(item.icono);
-                    return (
-                      <div key={item.id} className="flex gap-4">
-                        <div className="w-10 h-10 bg-accent/10 border border-accent/20 rounded flex items-center justify-center shrink-0">
-                          <Icon size={16} className="text-accent" />
-                        </div>
-                        <div>
-                          <div className="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">{item.titulo}</div>
-                          <div className="text-white/80 text-sm">{item.descripcion}</div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-
-            {/* Redes sociales */}
-            <div className="bg-card rounded-xl border border-white/10 p-8">
-              <h3
-                className="text-2xl font-black text-white uppercase mb-6"
-                style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
-              >
-                Síguenos
-              </h3>
-              {redesSociales.length === 0 ? (
-                <p className="text-white/40 text-sm">
-                  {redesLoading ? "Cargando…" : "Aún no hay redes sociales publicadas."}
-                </p>
-              ) : (
-                <div className="flex flex-col gap-3">
-                  {redesSociales.map((r) => {
-                    const info = REDES_SOCIALES_INFO[r.red];
-                    const Icon = info.Icon;
-                    return (
-                      <a
-                        key={r.id}
-                        href={r.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="flex items-center gap-3 px-4 py-3 border border-white/10 rounded text-white/70 hover:border-accent hover:text-accent transition-all duration-200"
-                      >
-                        <Icon size={18} />
-                        <span className="text-sm font-semibold">{info.label}</span>
-                      </a>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
+      <ContactsSection />
 
       {/* ── FOOTER ── */}
       <footer className="bg-[#030d1a] border-t border-white/5 pt-16 pb-8">
