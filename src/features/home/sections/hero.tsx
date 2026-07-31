@@ -67,37 +67,13 @@ export function HeroSection() {
           </p>
 
           <div className="fade-up fade-up-4 flex flex-wrap gap-4">
-            <Link href="/#registro" className="flex items-center gap-2 px-7 py-4 bg-accent text-[#061529] font-black text-lg rounded hover:bg-white transition-all duration-200" style={{ fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: "0.05em" }}>
-              AFÍLIATE <ArrowRight size={18} />
+            <Link href={ROUTES.atletasPagina} className="flex items-center gap-2 px-7 py-4 bg-accent text-[#061529] font-black text-lg rounded hover:bg-white transition-all duration-200" style={{ fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: "0.05em" }}>
+              CONOCE A NUESTROS ATLETAS <ArrowRight size={18} />
             </Link>
-            <Link href={ROUTES.atletas} className="flex items-center gap-2 px-7 py-4 border border-white/30 text-white font-semibold text-base rounded hover:border-accent hover:text-accent transition-all duration-200">
-              Conoce a Nuestros Atletas
+            <Link href={ROUTES.calendarioPagina} className="flex items-center gap-2 px-7 py-4 border border-white/30 text-white font-semibold text-base rounded hover:border-accent hover:text-accent transition-all duration-200">
+              Ver Calendario
             </Link>
           </div>
-
-          <div className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-6">
-            {[
-              { n: "380+", label: "Atletas Activos" },
-              { n: "47", label: "Clubes Afiliados" },
-              { n: "12", label: "Oros C.A. 2024" },
-              { n: "3", label: "Olímpicos Paris 24" },
-            ].map((s) => (
-              <div key={s.label} className="border-l-2 border-accent/40 pl-4">
-                <div className="text-3xl font-black text-accent" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>{s.n}</div>
-                <div className="text-xs text-white/50 mt-0.5 uppercase tracking-wide">{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="absolute bottom-0 left-0 right-0 overflow-x-auto scrollbar-hide">
-        <div className="flex min-w-max border-t border-white/10">
-          {["Natación", "Clavados", "Waterpolo", "Nado Sincronizado"].map((d, i) => (
-            <div key={d} className={`px-8 py-4 text-sm font-semibold tracking-wide cursor-default ${i === 0 ? "bg-accent text-[#061529]" : "bg-[#0a2040]/80 text-white/60 hover:text-white transition-colors"}`} style={{ fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: "0.08em", fontSize: "13px" }}>
-              {d.toUpperCase()}
-            </div>
-          ))}
         </div>
       </div>
     </section>
