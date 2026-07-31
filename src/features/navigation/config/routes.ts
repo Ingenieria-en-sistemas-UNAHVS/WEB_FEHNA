@@ -12,6 +12,7 @@ export const ROUTES = {
   galeria: "/#galeria",
   contacto: "/#contacto",
   rankings: "/rankings",
+  clubes: "/clubes",
 
   // Páginas públicas completas.
   sobreNosotros: "/sobre-nosotros",
@@ -19,6 +20,7 @@ export const ROUTES = {
   calendarioPagina: "/calendario",
   atletasPagina: "/atletas",
   atletaDetalle: (id: string | number) => `/atletas/${id}`,
+  clubDetalle: (id: string | number) => `/clubes/${id}`,
   galeriaPagina: "/galeria",
   contactoPagina: "/contacto",
 } as const;
@@ -29,6 +31,7 @@ export const MAIN_NAV: NavItem[] = [
   { tipo: "link", label: "Noticias", href: ROUTES.noticiasPagina },
   { tipo: "link", label: "Calendario", href: ROUTES.calendarioPagina },
   { tipo: "link", label: "Atletas", href: ROUTES.atletasPagina },
+  { tipo: "link", label: "Clubes", href: ROUTES.clubes },
   { tipo: "link", label: "Rankings", href: ROUTES.rankings },
   { tipo: "link", label: "Galería", href: ROUTES.galeriaPagina },
   { tipo: "link", label: "Sobre Nosotros", href: ROUTES.sobreNosotros },

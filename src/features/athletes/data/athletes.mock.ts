@@ -5,6 +5,8 @@ const teams = {
   ensigua: { id: "team-ensigua", name: "Ensigua", shortName: "ENS", city: "Siguatepeque" },
   barracudas: { id: "team-barracudas", name: "Barracudas", shortName: "BAR", city: "San Pedro Sula" },
   atlantis: { id: "team-atlantis", name: "Atlantis Valle de Ángeles", shortName: "ATL", city: "Valle de Ángeles" },
+  seahawks: { id: "team-seahawks", name: "Seahawks", shortName: "SEA", city: "La Ceiba" },
+  delfines: { id: "team-delfines", name: "Delfines de Olancho", shortName: "DEL", city: "Juticalpa" },
 };
 
 export const athletes: Athlete[] = [
@@ -59,3 +61,34 @@ export const athletes: Athlete[] = [
     medals: [],
   },
 ];
+
+const generatedAthletes: Athlete[] = [
+  ["7", "Mariana", "Torres", "F", "2009-05-12", teams.seahawks, "Libre", 50, "SC", 30220, 731, 4, "comp-4", "Copa Caribe 2026"],
+  ["8", "Samuel", "Castillo", "M", "2005-02-21", teams.delfines, "Dorso", 200, "LC", 131480, 724, 2, "comp-5", "Nacional por Clubes 2026"],
+  ["9", "Isabella", "Reyes", "F", "2006-10-03", teams.atlantis, "Mariposa", 50, "SC", 28560, 716, 3, "comp-4", "Copa Caribe 2026"],
+  ["10", "Gabriel", "Fuentes", "M", "2008-07-30", teams.ensigua, "Pecho", 100, "LC", 71340, 708, 5, "comp-5", "Nacional por Clubes 2026"],
+  ["11", "Luciana", "Molina", "F", "2010-01-16", teams.barracudas, "Libre", 100, "LC", 64490, 699, 2, "comp-6", "Torneo Juvenil del Norte"],
+  ["12", "Nicolás", "Zelaya", "M", "2007-12-08", teams.aj, "Mariposa", 200, "LC", 138920, 691, 4, "comp-6", "Torneo Juvenil del Norte"],
+  ["13", "Daniela", "Paz", "F", "2004-06-25", teams.seahawks, "Pecho", 200, "SC", 146300, 684, 1, "comp-7", "Open Nacional 2025"],
+  ["14", "Jorge", "Bueso", "M", "2003-03-14", teams.delfines, "Libre", 400, "LC", 236880, 677, 3, "comp-7", "Open Nacional 2025"],
+  ["15", "Renata", "Aguilar", "F", "2008-09-19", teams.aj, "Dorso", 100, "SC", 67120, 668, 6, "comp-5", "Nacional por Clubes 2026"],
+  ["16", "Emilio", "Membreño", "M", "2009-11-02", teams.barracudas, "Libre", 200, "LC", 128740, 659, 4, "comp-8", "Copa de Invierno FEHNA"],
+  ["17", "Paula", "Núñez", "F", "2005-08-28", teams.atlantis, "Libre", 800, "LC", 517600, 647, 2, "comp-8", "Copa de Invierno FEHNA"],
+  ["18", "Tomás", "Varela", "M", "2006-04-07", teams.seahawks, "Aguas abiertas", 5000, "OW", 3372400, 635, 1, "comp-4", "Copa Caribe 2026"],
+].map(([id, firstName, lastName, gender, birthDate, team, stroke, distanceMeters, course, timeMs, points, place, competitionId, competitionName]) => ({
+  id: id as string,
+  federationCode: `HN-00${id}`,
+  firstName: firstName as string,
+  lastName: lastName as string,
+  gender: gender as "F" | "M",
+  birthDate: birthDate as string,
+  nationality: "Honduras",
+  team: team as Athlete["team"],
+  performances: [{ id: `p-${id}01`, swimType: (stroke === "Aguas abiertas" ? "Aguas abiertas" : "Natación") as Athlete["performances"][number]["swimType"], stroke: stroke as string, distanceMeters: distanceMeters as number, course: course as "SC" | "LC" | "OW", timeMs: timeMs as number, points: points as number, place: place as number, competitionId: competitionId as string, competitionName: competitionName as string, date: "2026-05-18", status: "valid" }],
+  competitions: [{ id: competitionId as string, name: competitionName as string, date: "2026-05-18", location: "Honduras", events: 1, bestPlace: place as number, points: points as number }],
+  medals: (place as number) === 1 ? [{ id: `m-${id}01`, type: "Oro", competitionName: competitionName as string, eventName: `${distanceMeters} m ${stroke}`, date: "2026-05-18" }] : [],
+}));
+
+athletes.push(...generatedAthletes);
+
+export { teams as mockTeams };

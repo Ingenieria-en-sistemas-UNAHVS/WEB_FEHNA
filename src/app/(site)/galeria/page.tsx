@@ -1,5 +1,2 @@
-import { GaleriaSection } from "@/features/home/sections/galeria-section";
-
-export default function GaleriaPage() {
-  return <GaleriaSection />;
-}
+import { galleryItems, GalleryDirectory } from "@/features/gallery";
+export default async function GaleriaPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) { const params = await searchParams; const value = (key: string) => typeof params[key] === "string" ? params[key] : ""; return <GalleryDirectory items={galleryItems} initialPage={Number(value("page")) || 1} initialQuery={value("q")} initialType={value("type")} />; }
