@@ -15,6 +15,7 @@ import { GaleriaSection } from "@/components/public/galeria-section";
 import { PatrocinadoresSection } from "@/components/public/patrocinadores-section";
 import { ContactoSection } from "@/components/public/contacto-section";
 import { FooterSection } from "@/components/public/footer";
+import { SwimmingClassificationsSection } from "@/modules/home/sections/swimming-classifications";
 
 export default async function HomePage() {
   const [noticias, eventos, deportistas, tiempos, patrocinadores] = await Promise.all([
@@ -29,6 +30,7 @@ export default async function HomePage() {
     <div className="min-h-screen bg-background text-foreground" style={{ fontFamily: "'Outfit', sans-serif" }}>
       <Navbar />
       <HeroSection />
+      <SwimmingClassificationsSection />
       <NoticiasSection noticias={noticias} />
       <EventosSection eventos={eventos} />
       <AtletasSection deportistas={deportistas} />
