@@ -1,0 +1,8 @@
+import Link from "next/link";
+import { ArrowUpRight, Medal, UsersRound } from "lucide-react";
+import { ROUTES } from "@/features/navigation";
+import { getClubStats } from "../lib/club-stats";
+import type { Club } from "../types/club.types";
+
+export function ClubCard({ club }: { club: Club }) { const stats = getClubStats(club); return <Link href={ROUTES.clubDetalle(club.id)} className="group block rounded-2xl border border-white/10 bg-card/80 p-5 transition hover:-translate-y-1 hover:border-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"><div className="flex items-start justify-between"><div><p className="text-xs uppercase tracking-[0.18em] text-accent">{club.shortName} · {club.federationCode}</p><h2 className="mt-2 text-3xl font-black uppercase leading-none text-white" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>{club.name}</h2><p className="mt-2 text-sm text-muted-foreground">{club.city}, {club.department}</p></div><ArrowUpRight size={18} className="text-white/30 group-hover:text-accent" /></div><div className="mt-6 grid grid-cols-3 gap-3 border-t border-white/10 pt-4"><Metric icon={<UsersRound size={14} />} value={stats.activeAthletes} label="Atletas" /><Metric icon={<Medal size={14} />} value={stats.totalMedals} label="Medallas" /><Metric value={stats.totalPoints} label="Puntos" /></div></Link>; }
+function Metric({ icon, value, label }: { icon?: React.ReactNode; value: number; label: string }) { return <div><div className="flex items-center gap-1 text-xs text-muted-foreground">{icon}{label}</div><p className="mt-1 text-2xl font-black text-white" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>{value}</p></div>; }

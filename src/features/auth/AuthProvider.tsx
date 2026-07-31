@@ -39,6 +39,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let activo = true;
 
+    // Las rutas públicas mock pueden funcionar sin credenciales de Supabase.
+    // El panel administrativo conserva su flujo normal cuando las variables
+    // públicas están configuradas.
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
+      setCargando(false);
+      return () => { activo = false; };
+    }
+
     async function cargarPerfil(userId: string) {
       const { data } = await supabase
         .from("perfiles")
