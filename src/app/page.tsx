@@ -4,7 +4,7 @@ import { getDeportistasPublicos } from "@/lib/data/deportistas";
 import { getTiemposRanking } from "@/lib/data/tiempos";
 import { getPatrocinadoresPublicos } from "@/lib/data/patrocinadores";
 
-import { Navigation } from "@/components/public/navigation";
+import { Navbar } from "@/modules/navigation";
 import { HeroSection } from "@/components/public/hero";
 import { NoticiasSection } from "@/components/public/noticias-section";
 import { EventosSection } from "@/components/public/eventos-section";
@@ -27,7 +27,7 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground" style={{ fontFamily: "'Outfit', sans-serif" }}>
-      <Navigation />
+      <Navbar />
       <HeroSection />
       <NoticiasSection noticias={noticias} />
       <EventosSection eventos={eventos} />
