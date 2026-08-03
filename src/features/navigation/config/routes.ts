@@ -18,6 +18,7 @@ export const ROUTES = {
   sobreNosotros: "/sobre-nosotros",
   noticiasPagina: "/noticias",
   calendarioPagina: "/calendario",
+  eventoDetalle: (id: string | number) => `/calendario/${id}`,
   atletasPagina: "/atletas",
   atletaDetalle: (id: string | number) => `/atletas/${id}`,
   clubDetalle: (id: string | number) => `/clubes/${id}`,
