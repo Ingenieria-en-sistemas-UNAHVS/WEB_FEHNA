@@ -21,7 +21,8 @@ export function EventCompactCardContent({
         {event.image ? (
           <img
             {...getResponsiveImageProps(event.image.src, "(max-width: 639px) 94px, 112px")}
-            alt={event.image.alt}
+            alt=""
+            aria-hidden="true"
             loading="lazy"
             decoding="async"
             className="absolute inset-0 h-full w-full object-cover opacity-55 transition duration-500 group-hover:scale-105 group-hover:opacity-75 motion-reduce:transition-none motion-reduce:group-hover:scale-100"

@@ -41,6 +41,18 @@ export function getResponsiveImageProps(src: string, sizes: string) {
   };
 }
 
+function EventCodeFallback({ event }: { event: CalendarEvent }) {
+  return (
+    <span
+      className="absolute inset-0 flex items-center justify-center -rotate-90 whitespace-nowrap text-5xl font-black uppercase tracking-[-0.03em] text-white/10"
+      style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
+      aria-hidden="true"
+    >
+      {event.code}
+    </span>
+  );
+}
+
 export function EventVisual({
   event,
   className,
@@ -50,31 +62,27 @@ export function EventVisual({
   className?: string;
   sizes?: string;
 }) {
+  const visualClassName = `${className ?? "relative"} flex items-center justify-center overflow-hidden bg-[#0b2949]`;
+
   if (event.image) {
     const imageProps = getResponsiveImageProps(event.image.src, sizes);
 
     return (
-      <img
-        {...imageProps}
-        alt={event.image.alt}
-        loading="lazy"
-        decoding="async"
-        className={`${className ?? ""} h-full w-full object-cover transition duration-700 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100`}
-      />
+      <div className={visualClassName} role="img" aria-label={event.image.alt}>
+        <EventCodeFallback event={event} />
+        <img
+          {...imageProps}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+        />
+      </div>
     );
   }
 
-  return (
-    <div className={`${className ?? ""} flex items-center justify-center bg-[#0b2949]`}>
-      <span
-        className="-rotate-90 whitespace-nowrap text-5xl font-black uppercase tracking-[-0.03em] text-white/10"
-        style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
-        aria-hidden="true"
-      >
-        {event.code}
-      </span>
-    </div>
-  );
+  return <div className={visualClassName}><EventCodeFallback event={event} /></div>;
 }
 
 export function EventDateBlock({
@@ -94,6 +102,7 @@ export function EventDateBlock({
   return (
     <time
       dateTime={event.startDate}
+      aria-label={formatEventDateRange(event)}
       title={formatEventDateRange(event)}
       className="inline-flex flex-col leading-none"
     >
