@@ -18,7 +18,11 @@ export function EventFeaturedCardContent({
 }: EventCardContentProps) {
   return (
     <>
-      <EventVisual event={event} className="absolute inset-0" />
+      <EventVisual
+        event={event}
+        className="absolute inset-0"
+        sizes="(max-width: 1023px) 100vw, 60vw"
+      />
       <div className="absolute inset-0 bg-gradient-to-t from-[#04101f] via-[#04101f]/70 to-[#04101f]/10" />
       <div className="relative flex min-h-[430px] flex-col justify-between p-5 sm:p-7">
         <div className="flex flex-wrap items-start justify-between gap-3">
@@ -57,4 +61,3 @@ export function EventFeaturedCardContent({
     </>
   );
 }
-

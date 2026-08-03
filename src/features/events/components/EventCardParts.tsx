@@ -10,19 +10,55 @@ export interface EventCardContentProps {
   hasLink: boolean;
 }
 
+function withImageWidth(src: string, width: number): string {
+  try {
+    const url = new URL(src);
+    const sourceWidth = Number(url.searchParams.get("w"));
+    const sourceHeight = Number(url.searchParams.get("h"));
+    url.searchParams.set("w", String(width));
+
+    if (sourceWidth > 0 && sourceHeight > 0) {
+      url.searchParams.set("h", String(Math.round((width * sourceHeight) / sourceWidth)));
+    }
+
+    return url.toString();
+  } catch {
+    return src;
+  }
+}
+
+export function getResponsiveImageProps(src: string, sizes: string) {
+  const isRemoteImage = /^https?:\/\//.test(src);
+
+  return {
+    src: isRemoteImage ? withImageWidth(src, 800) : src,
+    srcSet: isRemoteImage
+      ? [480, 800, 1200]
+          .map((width) => `${withImageWidth(src, width)} ${width}w`)
+          .join(", ")
+      : undefined,
+    sizes,
+  };
+}
+
 export function EventVisual({
   event,
   className,
+  sizes = "(max-width: 768px) 100vw, 320px",
 }: {
   event: CalendarEvent;
   className?: string;
+  sizes?: string;
 }) {
   if (event.image) {
+    const imageProps = getResponsiveImageProps(event.image.src, sizes);
+
     return (
       <img
-        src={event.image.src}
+        {...imageProps}
         alt={event.image.alt}
         loading="lazy"
+        decoding="async"
         className={`${className ?? ""} h-full w-full object-cover transition duration-700 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100`}
       />
     );

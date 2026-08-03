@@ -5,6 +5,7 @@ import {
   LocationLabel,
   SponsorSummary,
   type EventCardContentProps,
+  getResponsiveImageProps,
 } from "./EventCardParts";
 
 export function EventCompactCardContent({
@@ -19,9 +20,10 @@ export function EventCompactCardContent({
       <div className="relative border-r border-white/10 bg-secondary">
         {event.image ? (
           <img
-            src={event.image.src}
+            {...getResponsiveImageProps(event.image.src, "(max-width: 639px) 94px, 112px")}
             alt={event.image.alt}
             loading="lazy"
+            decoding="async"
             className="absolute inset-0 h-full w-full object-cover opacity-55 transition duration-500 group-hover:scale-105 group-hover:opacity-75 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
           />
         ) : null}
@@ -60,4 +62,3 @@ export function EventCompactCardContent({
     </div>
   );
 }
-

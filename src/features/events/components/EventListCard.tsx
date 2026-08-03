@@ -24,7 +24,11 @@ export function EventListCardContent({
   return (
     <div className="grid md:grid-cols-[190px_1fr] xl:grid-cols-[210px_1fr_180px]">
       <div className="relative min-h-44 overflow-hidden border-b border-white/10 bg-secondary md:min-h-full md:border-b-0 md:border-r">
-        <EventVisual event={event} className="absolute inset-0" />
+        <EventVisual
+          event={event}
+          className="absolute inset-0"
+          sizes="(max-width: 767px) 100vw, 210px"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-[#061529]/95 via-[#061529]/35 to-transparent" />
         <div className="absolute bottom-4 left-4">
           <EventDateBlock event={event} inverted />
