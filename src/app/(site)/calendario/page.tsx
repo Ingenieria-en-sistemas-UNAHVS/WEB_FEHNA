@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { EVENTS_MOCK, EventsDirectory } from "@/features/events";
+import { EventsDirectory } from "@/features/events";
+import { getPublicCalendarEvents } from "@/features/events/data/events.repository";
 
 export const metadata: Metadata = {
   title: "Calendario de eventos | FEHNA",
@@ -7,6 +8,8 @@ export const metadata: Metadata = {
     "Consulta competencias, prácticas y encuentros de la Federación Hondureña de Natación.",
 };
 
-export default function CalendarioPage() {
-  return <EventsDirectory events={EVENTS_MOCK} />;
+export default async function CalendarioPage() {
+  const events = await getPublicCalendarEvents();
+
+  return <EventsDirectory events={events} />;
 }

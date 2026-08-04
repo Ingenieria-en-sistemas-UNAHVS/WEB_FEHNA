@@ -48,7 +48,7 @@ function EventCodeFallback({ event }: { event: CalendarEvent }) {
       style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
       aria-hidden="true"
     >
-      {event.code}
+      {event.code ?? "Código pendiente"}
     </span>
   );
 }

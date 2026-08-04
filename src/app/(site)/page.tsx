@@ -6,14 +6,17 @@ import { RankingsSection } from "@/features/home/sections/rankings-section";
 import { GaleriaSection } from "@/features/home/sections/galeria-section";
 import { PatrocinadoresSection } from "@/features/home/sections/patrocinadores-section";
 import { SwimmingClassificationsSection } from "@/features/home/sections/swimming-classifications";
-import { EVENTS_MOCK, EventsPreviewSection } from "@/features/events";
+import { EventsPreviewSection } from "@/features/events";
+import { getPublicCalendarEvents } from "@/features/events/data/events.repository";
 
 export default async function HomePage() {
+  const events = await getPublicCalendarEvents();
+
   return (
     <div className="min-h-screen bg-background text-foreground" style={{ fontFamily: "'Outfit', sans-serif" }}>
       <HeroSection />
       <SwimmingClassificationsSection />
-      <EventsPreviewSection events={EVENTS_MOCK} />
+      <EventsPreviewSection events={events} />
       <NoticiasSection noticias={[]} />
       <AthletesPreviewSection athletes={rankAthletes(athletes).slice(0, 3)} />
       <RankingsSection tiempos={[]} />

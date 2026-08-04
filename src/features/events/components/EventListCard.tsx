@@ -41,7 +41,7 @@ export function EventListCardContent({
           <span className="text-xs font-medium text-[#9bc4db]">{temporalLabel}</span>
           <span className="text-xs text-white/30" aria-hidden="true">•</span>
           <span className="text-xs font-bold uppercase tracking-[0.12em] text-accent">
-            {event.code}
+            {event.code ?? "Código pendiente"}
           </span>
         </div>
 

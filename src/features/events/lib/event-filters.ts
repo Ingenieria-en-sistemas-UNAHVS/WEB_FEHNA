@@ -19,7 +19,7 @@ export function filterEvents(
   const query = filters.query.trim().toLocaleLowerCase("es");
 
   const filtered = events.filter((event) => {
-    const searchable = `${event.name} ${event.code} ${event.location ?? ""}`
+    const searchable = `${event.name} ${event.code ?? ""} ${event.location ?? ""}`
       .toLocaleLowerCase("es");
     const matchesQuery = !query || searchable.includes(query);
     const matchesDate = isDateWithinEvent(event, filters.date);
@@ -50,4 +50,3 @@ export function hasEventFilters(filters: EventFiltersState): boolean {
       filters.participantCategory,
   );
 }
-

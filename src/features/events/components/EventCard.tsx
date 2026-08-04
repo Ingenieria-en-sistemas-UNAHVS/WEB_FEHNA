@@ -27,7 +27,12 @@ export function EventCard({
   href,
   className = "",
 }: EventCardProps) {
-  const typeMeta = EVENT_TYPE_META[event.type];
+  const typeMeta = event.type
+    ? EVENT_TYPE_META[event.type]
+    : {
+        label: "Tipo por confirmar",
+        badgeClassName: "bg-white/10 text-white/80 ring-1 ring-inset ring-white/15",
+      };
   const temporalState = getEventTemporalState(event);
   const wrapperClassName = [
     "group relative overflow-hidden rounded-2xl border border-white/10 bg-card",
@@ -74,4 +79,3 @@ export function EventCard({
 
   return <article className={wrapperClassName}>{content}</article>;
 }
-
