@@ -1,25 +1,16 @@
-import { CONTACT_CHANNEL_ORDER } from "./config/contact-channels";
-import { CONTACTOS_MOCK } from "./data/contacts.mock";
-import { ContactCard } from "./components/ContactCard";
+import type { RedSocialRow, InfoContactoRow } from "@/lib/data/contacto";
+import { SocialCard } from "./components/SocialCard";
+import { InfoCard } from "./components/InfoCard";
 import { AffiliationCallout } from "./components/AffiliationCallout";
-import type { ContactChannelData } from "./types/contact.types";
 
 interface ContactsSectionProps {
-  /** Canales de contacto. Por defecto usa el mock; a futuro, datos reales. */
-  contactos?: ContactChannelData[];
+  redes: RedSocialRow[];
+  info: InfoContactoRow[];
 }
 
-export function ContactsSection({ contactos = CONTACTOS_MOCK }: ContactsSectionProps) {
-  // Solo canales con al menos una entrada visible, en el orden definido.
-  const canalesConDatos = CONTACT_CHANNEL_ORDER.map((canal) =>
-    contactos.find((c) => c.canal === canal)
-  ).filter(
-    (c): c is ContactChannelData =>
-      !!c && c.entradas.some((e) => e.valor.trim() !== "" || e.proximamente)
-  );
-
-  // Si no hay ningún canal con datos, la sección no se renderiza.
-  if (canalesConDatos.length === 0) return null;
+export function ContactsSection({ redes, info }: ContactsSectionProps) {
+  // Si no hay ni redes ni información visible, la sección no se renderiza.
+  if (redes.length === 0 && info.length === 0) return null;
 
   return (
     <section id="contacto" className="py-24 bg-background">
@@ -41,11 +32,21 @@ export function ContactsSection({ contactos = CONTACTOS_MOCK }: ContactsSectionP
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {canalesConDatos.map((c) => (
-            <ContactCard key={c.canal} canal={c.canal} entradas={c.entradas} />
-          ))}
-        </div>
+        {info.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto mb-6">
+            {info.map((item) => (
+              <InfoCard key={item.id} info={item} />
+            ))}
+          </div>
+        )}
+
+        {redes.length > 0 && (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-5xl mx-auto mb-6">
+            {redes.map((red) => (
+              <SocialCard key={red.id} red={red} />
+            ))}
+          </div>
+        )}
 
         <div className="max-w-5xl mx-auto mt-6">
           <AffiliationCallout />
