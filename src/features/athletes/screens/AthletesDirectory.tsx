@@ -19,7 +19,7 @@ export function AthletesDirectory({ athletes, initialPage = 1, initialSearch = "
   const filtered = useMemo(() => athletes.filter((athlete) => {
     const term = search.toLocaleLowerCase().trim();
     const matchesSearch = !term || `${athlete.firstName} ${athlete.lastName} ${athlete.team.name}`.toLocaleLowerCase().includes(term);
-    return matchesSearch && (!gender || athlete.gender === gender) && (!swimType || athlete.bestPerformance.swimType === swimType) && (!team || athlete.team.name === team);
+    return matchesSearch && (!gender || athlete.gender === gender) && (!swimType || athlete.bestPerformance?.swimType === swimType) && (!team || athlete.team.name === team);
   }), [athletes, gender, search, swimType, team]);
   const clearFilters = () => { setSearch(""); setGender(""); setSwimType(""); setTeam(""); };
   const pageInfo = paginate(filtered, initialPage, 6);

@@ -1,4 +1,4 @@
-import { athletes, mockTeams } from "@/features/athletes";
+import { athletes, mockTeams } from "@/features/athletes/data/athletes.mock";
 import type { Club } from "../types/club.types";
 
 const metadata: Record<string, { federationCode: string; department: string; foundedYear: number }> = {
