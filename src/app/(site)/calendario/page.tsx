@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { EventsDirectory } from "@/features/events";
-import { getEventosPublicos, getPortadasPorEntidad, getTiemposRanking } from "@/lib/data";
-import { aEventosCalendario } from "@/lib/mappers";
+import { getPublicCalendarEvents } from "@/features/events/data/events.repository";
 
 export const metadata: Metadata = {
   title: "Calendario de eventos | FEHNA",
@@ -10,11 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default async function CalendarioPage() {
-  const [eventos, tiempos, portadas] = await Promise.all([
-    getEventosPublicos(),
-    getTiemposRanking(),
-    getPortadasPorEntidad("eventos"),
-  ]);
+  const events = await getPublicCalendarEvents();
 
-  return <EventsDirectory events={aEventosCalendario(eventos, tiempos, portadas)} />;
+  return <EventsDirectory events={events} />;
 }

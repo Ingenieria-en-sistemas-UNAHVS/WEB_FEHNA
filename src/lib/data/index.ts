@@ -1,8 +1,8 @@
 export { getNoticiasPublicas, getNoticiaBySlug } from "./noticias";
 export type { NoticiaRow } from "./noticias";
 
-export { getEventosPublicos } from "./eventos";
-export type { EventoRow } from "./eventos";
+export { getEventosPublicos, getMediosEventosPublicos } from "./eventos";
+export type { EventoMediaRow, EventoRow } from "./eventos";
 
 export { getDeportistasPublicos, getDeportistasConClub } from "./deportistas";
 export type { DeportistaRow, DeportistaCompletoRow } from "./deportistas";

@@ -41,7 +41,7 @@ export function EventCompactCardContent({
             <span className="text-[11px] font-medium text-[#9bc4db]">{temporalLabel}</span>
           </div>
           <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.15em] text-accent">
-            {event.code}
+            {event.code ?? "Código pendiente"}
           </p>
           <h3
             className="mt-1 text-2xl font-black uppercase leading-none tracking-[-0.02em] text-white sm:text-3xl"

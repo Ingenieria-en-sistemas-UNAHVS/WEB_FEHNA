@@ -55,7 +55,7 @@ export function EventsDirectory({ events }: { events: CalendarEvent[] }) {
             Consulta competencias, prácticas y encuentros de las disciplinas acuáticas federadas. Usa los filtros para encontrar la jornada que buscas.
           </p>
           <p className="mt-5 text-xs font-medium text-[#719cb5]">
-            Contenido demostrativo para validar la experiencia visual.
+            Eventos publicados por FEHNA. Los detalles adicionales se habilitarán progresivamente.
           </p>
         </div>
       </header>

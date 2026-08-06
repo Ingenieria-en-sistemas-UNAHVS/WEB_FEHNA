@@ -37,7 +37,7 @@ export function EventFeaturedCardContent({
 
         <div className="max-w-2xl">
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-accent">
-            {event.code}
+            {event.code ?? "Código pendiente"}
           </p>
           <h3
             className="mt-3 max-w-[14ch] text-4xl font-black uppercase leading-[0.92] tracking-[-0.02em] text-white sm:text-5xl"

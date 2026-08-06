@@ -26,13 +26,15 @@ export interface EventImage {
 
 export interface CalendarEvent {
   id: string;
-  code: string;
+  /** Código oficial, cuando ya esté disponible en el modelo de eventos. */
+  code?: string;
   name: string;
   description?: string;
   startDate: string;
   endDate?: string;
   location?: string;
-  type: EventType;
+  /** El esquema actual todavía no persiste el tipo de evento. */
+  type?: EventType;
   image?: EventImage;
   sponsors: EventSponsor[];
   disciplines: SwimmingDiscipline[];
@@ -48,4 +50,3 @@ export interface EventFiltersState {
 }
 
 export type EventTemporalState = "upcoming" | "ongoing" | "past";
-
