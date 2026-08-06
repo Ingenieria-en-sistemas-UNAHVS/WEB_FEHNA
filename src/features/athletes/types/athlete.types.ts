@@ -62,5 +62,6 @@ export interface Athlete {
 export interface RankedAthlete extends Athlete {
   rankingPosition: number;
   totalPoints: number;
-  bestPerformance: AthletePerformance;
+  /** null si el atleta todavía no tiene marcas válidas registradas. */
+  bestPerformance: AthletePerformance | null;
 }

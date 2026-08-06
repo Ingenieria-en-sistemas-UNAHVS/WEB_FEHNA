@@ -30,14 +30,16 @@ export function AthleteCard({ athlete, compact = false }: AthleteCardProps) {
       </div>
 
       <div className="mt-5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-white/60">
-        <span className="rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 text-accent">{performance.swimType}</span>
-        <span className="truncate">{formatEventName(performance)}</span>
+        {performance ? <>
+          <span className="rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 text-accent">{performance.swimType}</span>
+          <span className="truncate">{formatEventName(performance)}</span>
+        </> : <span className="rounded-full border border-white/15 px-2.5 py-1 text-white/40">Sin marcas registradas</span>}
       </div>
 
       <div className={`mt-5 grid ${compact ? "grid-cols-2" : "grid-cols-3"} gap-3 border-t border-white/10 pt-4`}>
         <div>
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground"><Timer size={13} /> Mejor marca</div>
-          <p className="mt-1 text-2xl font-black text-white" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>{formatTime(performance.timeMs)}</p>
+          <p className="mt-1 text-2xl font-black text-white" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>{performance ? formatTime(performance.timeMs) : "—"}</p>
         </div>
         <div>
           <div className="text-xs text-muted-foreground">Puntuación</div>

@@ -1,4 +1,4 @@
-import { athletes } from "@/features/athletes";
+import { athletes } from "@/features/athletes/data/athletes.mock";
 import type { RankingEntry } from "../types/ranking.types";
 
 const baseEntries: RankingEntry[] = athletes.flatMap((athlete) => athlete.performances.map((performance, index) => ({
