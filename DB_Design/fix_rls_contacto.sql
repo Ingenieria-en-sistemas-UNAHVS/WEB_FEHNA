@@ -1,0 +1,56 @@
+-- =====================================================================
+-- FIX RLS: lectura pública de redes_sociales e informacion_contacto
+-- APLICADO el 2026-08-04 en el proyecto tmpubpndujcyeablirah.
+-- ---------------------------------------------------------------------
+-- PROBLEMA
+-- La política de lectura de ambas tablas es:
+--
+--   "lectura publica X"  SELECT  {public}  ((visible = true) OR es_admin())
+--
+-- El rol `public` incluye a `anon`, así que Postgres evalúa es_admin()
+-- para un visitante anónimo. anon no tenía EXECUTE sobre esa función y
+-- PostgREST respondía:
+--
+--   42501: permission denied for function es_admin
+--
+-- Efecto: /contacto no leía nada como visitante y caía a los canales
+-- por defecto del código.
+--
+-- SOLUCIÓN APLICADA
+-- Una sola línea, sin tocar ninguna política:
+-- =====================================================================
+
+grant execute on function public.es_admin() to anon;
+
+-- ---------------------------------------------------------------------
+-- POR QUÉ ES SEGURO
+-- es_admin() es:
+--   SELECT EXISTS (SELECT 1 FROM perfiles
+--                  WHERE id = auth.uid() AND rol='admin' AND activo=true)
+--
+-- Para un anónimo auth.uid() es null -> no hay fila -> devuelve false,
+-- siempre. Devuelve un booleano sobre QUIEN LA LLAMA, nunca datos de
+-- `perfiles`. Con el permiso, la política queda efectivamente en
+-- `visible = true` para el público, que es el comportamiento buscado.
+--
+-- NOTA
+-- `migrations.sql` revoca a propósito el acceso de anon a es_staff().
+-- Esto reabre esa puerta solo para es_admin(). Se aceptó el trade-off
+-- porque la función no expone información.
+--
+-- ALTERNATIVA (no aplicada)
+-- Reescribir la política pública para que no llame a ninguna función:
+--
+--   drop policy "lectura publica redes_sociales" on public.redes_sociales;
+--   create policy "lectura publica redes_sociales" on public.redes_sociales
+--     for select to anon using (visible = true);
+--   create policy "panel lee redes_sociales" on public.redes_sociales
+--     for select to authenticated using (visible = true or public.es_admin());
+--
+-- Mantiene la restricción original sobre es_admin(), pero exige repetir
+-- el par de políticas por tabla. Si algún día se revoca el grant de
+-- arriba, este es el camino de reemplazo.
+--
+-- COMPROBACIÓN (verificada: devuelve filas, ya no 42501)
+--   curl "$URL/rest/v1/redes_sociales?select=*" -H "apikey: $KEY"
+-- =====================================================================

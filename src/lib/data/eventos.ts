@@ -15,7 +15,7 @@ export async function getEventosPublicos() {
   const supabase = await createClient();
   const { data } = await supabase
     .from("eventos")
-    .select("id, nombre, sede, fecha_inicio, fecha_fin, publicado, tipos_piscina(nombre)")
+    .select("id, nombre, sede, descripcion, fecha_inicio, fecha_fin, publicado, tipos_piscina(nombre)")
     .eq("publicado", true)
     .order("fecha_inicio", { ascending: true });
   return (data ?? []) as EventoRow[];

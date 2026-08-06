@@ -1,6 +1,10 @@
 import { ChevronRight, Play } from "lucide-react";
 import Link from "next/link";
 import { ROUTES } from "@/features/navigation";
+import type { GalleryItem } from "@/features/gallery";
+
+// Distribución del mosaico: la primera imagen ocupa el bloque grande.
+const SPANS = ["col-span-2 row-span-2", "", "", "", "", "col-span-2"];
 
 const GALLERY = [
   { id: 1, src: "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=600&h=400&fit=crop&auto=format", alt: "Competencia de natación", span: "col-span-2 row-span-2" },
@@ -11,7 +15,20 @@ const GALLERY = [
   { id: 6, src: "https://images.unsplash.com/photo-1519315901367-f34ff9154487?w=600&h=300&fit=crop&auto=format", alt: "Nado sincronizado", span: "col-span-2" },
 ];
 
-export function GaleriaSection() {
+/**
+ * Muestra las imágenes reales de la galería. Mientras no haya medios
+ * cargados en Supabase, cae al mosaico de referencia del diseño.
+ */
+export function GaleriaSection({ items = [] }: { items?: GalleryItem[] }) {
+  const mosaico = items.length
+    ? items.slice(0, SPANS.length).map((item, i) => ({
+        id: item.id,
+        src: item.src,
+        alt: item.alt,
+        span: SPANS[i] ?? "",
+      }))
+    : GALLERY;
+
   return (
     <section id="galeria" className="py-24 bg-background">
       <div className="max-w-7xl mx-auto px-4">
@@ -26,7 +43,7 @@ export function GaleriaSection() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 auto-rows-48">
-          {GALLERY.map((item) => (
+          {mosaico.map((item) => (
             <Link href={ROUTES.galeriaPagina} key={item.id} className={`group relative overflow-hidden rounded-lg bg-secondary cursor-pointer ${item.span}`}>
               <img src={item.src} alt={item.alt} className="w-full h-full object-cover opacity-75 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
               <div className="absolute inset-0 bg-[#061529]/0 group-hover:bg-[#061529]/30 transition-all duration-300" />
